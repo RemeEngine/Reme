@@ -21,31 +21,31 @@ public:
 
     // Basic Quad Drawing API
 
-    static void fill_rect(const Color& color, float x, float y, float w, float h)
+    static void fill_rect(const Color& color, float x, float y, float width, float height)
     {
-        draw_partial_texture(Texture::WHITE, 0.0f, 0.0f, 0.0f, 0.0f, x, y, w, h, color);
+        draw_partial_texture(Texture::WHITE, 0.0f, 0.0f, 0.0f, 0.0f, x, y, width, height, color);
     }
 
-    static void draw_texture(const RefPtr<Texture>& texture, float dX, float dY)
+    static void draw_texture(const RefPtr<Texture>& texture, float dest_x, float dest_y)
     {
         draw_partial_texture(
             texture,
             0.0f, 0.0f, texture->width(), texture->height(),
-            dX, dY, texture->width(), texture->height());
+            dest_x, dest_y, texture->width(), texture->height());
     }
 
-    static void draw_texture(const RefPtr<Texture>& texture, float dX, float dY, float dW, float dH)
+    static void draw_texture(const RefPtr<Texture>& texture, float dest_x, float dest_y, float dest_width, float dest_height)
     {
         draw_partial_texture(
             texture,
             0.0f, 0.0f, texture->width(), texture->height(),
-            dX, dY, dW, dH);
+            dest_x, dest_y, dest_width, dest_height);
     }
 
     static void draw_partial_texture(
         const RefPtr<Texture>& texture,
-        float sX, float sY, float sW, float sH,
-        float dX, float dY, float dW, float dH,
+        float source_x, float source_y, float source_width, float source_height,
+        float dest_x, float dest_y, float dest_width, float dest_height,
         const Color& color = Color::WHITE);
 
     // Transformation
@@ -57,11 +57,11 @@ public:
 
     static void translate(float x, float y);
     static void scale(float x, float y);
-    static void rotate(float rotRadian);
+    static void rotate(float rotation_radian);
 
     struct Vertex {
         glm::vec2 position;
-        glm::vec2 UV;
+        glm::vec2 uv;
         glm::vec4 color;
         float texture_index;
     };
@@ -76,7 +76,7 @@ public:
         u32 vertex_index;
 
         std::vector<WeakPtr<Texture>> textures;
-        u32 textureIndex;
+        u32 texture_index;
     };
 
 private:

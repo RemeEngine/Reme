@@ -74,12 +74,12 @@ void Renderer2D::initialize()
 
     s_data.flat_color_shader->bind();
 
-    i32* uTexIndexs = new i32[MAX_TEXTURE_UNIT];
+    i32* u_texture_indexes = new i32[MAX_TEXTURE_UNIT];
     for (u32 i = 0; i < MAX_TEXTURE_UNIT; i++)
-        uTexIndexs[i] = i;
+        u_texture_indexes[i] = i;
 
-    s_data.flat_color_shader->set_int_array("Textures", uTexIndexs, MAX_TEXTURE_UNIT);
-    delete[] uTexIndexs;
+    s_data.flat_color_shader->set_int_array("Textures", u_texture_indexes, MAX_TEXTURE_UNIT);
+    delete[] u_texture_indexes;
 
     s_data.VAO = VertexArray::create();
 
@@ -111,7 +111,7 @@ void Renderer2D::initialize()
     delete[] indicies;
 
     s_data.vertex_index = 0;
-    s_data.textureIndex = 0;
+    s_data.texture_index = 0;
 }
 
 void Renderer2D::shutdown()
@@ -144,7 +144,7 @@ void Renderer2D::flush()
     if (s_data.vertex_index == 0)
         return;
 
-    for (u32 i = 0; i < s_data.textureIndex; i++) {
+    for (u32 i = 0; i < s_data.texture_index; i++) {
         if (!s_data.textures[i].expired())
             s_data.textures[i].lock()->bind(i);
     }
@@ -153,7 +153,7 @@ void Renderer2D::flush()
     RenderCommand::draw_indexed(DrawMode::TRIANGLES, s_data.vertex_index / 4 * 6 * sizeof(u32));
 
     s_data.vertex_index = 0;
-    s_data.textureIndex = 0;
+    s_data.texture_index = 0;
     for (auto& p : s_data.textures)
         p.reset();
 }
@@ -166,7 +166,7 @@ void Renderer2D::draw_partial_texture(
 {
     float texture_index = -1.0f;
 
-    for (u32 i = 0; i < s_data.textureIndex; i++) {
+    for (u32 i = 0; i < s_data.texture_index; i++) {
         auto texture$i = s_data.textures[i].expired() ? Texture::DEFAULT : s_data.textures[i].lock();
 
         if (texture->uid() == texture$i->uid()) {
@@ -176,14 +176,14 @@ void Renderer2D::draw_partial_texture(
     }
 
     if (
-        s_data.vertex_index + 4 >= MAX_QUAD_COUNT || (texture_index == -1.0f && s_data.textureIndex == MAX_TEXTURE_UNIT)) {
+        s_data.vertex_index + 4 >= MAX_QUAD_COUNT || (texture_index == -1.0f && s_data.texture_index == MAX_TEXTURE_UNIT)) {
         flush();
     }
 
     if (texture_index == -1.0f) {
-        s_data.textures[s_data.textureIndex] = texture;
-        texture_index = (float)s_data.textureIndex;
-        s_data.textureIndex++;
+        s_data.textures[s_data.texture_index] = texture;
+        texture_index = (float)s_data.texture_index;
+        s_data.texture_index++;
     }
 
     const glm::mat3& transform_matrix = s_tranform_stack.back();
@@ -195,25 +195,25 @@ void Renderer2D::draw_partial_texture(
     source_height = source_height / texture->height();
 
     s_data.buffer[s_data.vertex_index].position = transform_matrix * glm::vec3(dest_x, dest_y, 1.0f);
-    s_data.buffer[s_data.vertex_index].UV = { source_x, source_x };
+    s_data.buffer[s_data.vertex_index].uv = { source_x, source_x };
     s_data.buffer[s_data.vertex_index].color = float_color;
     s_data.buffer[s_data.vertex_index].texture_index = texture_index;
     s_data.vertex_index++;
 
     s_data.buffer[s_data.vertex_index].position = transform_matrix * glm::vec3(dest_x + dest_width, dest_y, 1.0f);
-    s_data.buffer[s_data.vertex_index].UV = { source_x + source_width, source_x };
+    s_data.buffer[s_data.vertex_index].uv = { source_x + source_width, source_x };
     s_data.buffer[s_data.vertex_index].color = float_color;
     s_data.buffer[s_data.vertex_index].texture_index = texture_index;
     s_data.vertex_index++;
 
     s_data.buffer[s_data.vertex_index].position = transform_matrix * glm::vec3(dest_x, dest_y + dest_height, 1.0f);
-    s_data.buffer[s_data.vertex_index].UV = { source_x, source_x + source_height };
+    s_data.buffer[s_data.vertex_index].uv = { source_x, source_x + source_height };
     s_data.buffer[s_data.vertex_index].color = float_color;
     s_data.buffer[s_data.vertex_index].texture_index = texture_index;
     s_data.vertex_index++;
 
     s_data.buffer[s_data.vertex_index].position = transform_matrix * glm::vec3(dest_x + dest_width, dest_y + dest_height, 1.0f);
-    s_data.buffer[s_data.vertex_index].UV = { source_x + source_width, source_x + source_height };
+    s_data.buffer[s_data.vertex_index].uv = { source_x + source_width, source_x + source_height };
     s_data.buffer[s_data.vertex_index].color = float_color;
     s_data.buffer[s_data.vertex_index].texture_index = texture_index;
     s_data.vertex_index++;
