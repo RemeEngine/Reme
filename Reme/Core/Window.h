@@ -35,8 +35,16 @@ public:
     virtual void* native_window() const = 0;
     virtual void set_event_callback(EventFunctionCB) = 0;
 
-    void set_current_scene(RefPtr<GUI::Node> scene) { m_scene = scene; }
     RefPtr<GUI::Node> current_scene() { return m_scene; }
+    void set_current_scene(RefPtr<GUI::Node> scene)
+    {
+        if (m_scene) {
+            m_scene->on_exit();
+        }
+
+        m_scene = scene;
+        scene->on_enter();
+    }
 
     void on_event(Event& event)
     {

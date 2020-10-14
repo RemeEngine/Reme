@@ -35,13 +35,13 @@ public:
 
     virtual void on_event(Badge<Window>, Event&);
 
-protected:
     virtual void render() {}
     virtual void update(float) {}
 
     virtual void on_enter() {}
     virtual void on_exit() {}
 
+protected:
     virtual bool on_mouse_down(MouseDownEvent) { return false; }
     virtual bool on_mouse_up(MouseUpEvent) { return false; }
     virtual bool on_mouse_move(MouseMoveEvent) { return false; }
