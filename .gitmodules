@@ -1,0 +1,17 @@
+[submodule "Libraries/imgui"]
+	path = Libraries/imgui
+	url = https://github.com/RemeEngine/imgui.git
+	branch = docking
+[submodule "Libraries/GLFW"]
+	path = Libraries/GLFW
+	url = https://github.com/RemeEngine/GLFW.git
+[submodule "Libraries/glm"]
+	path = Libraries/glm
+	url = https://github.com/RemeEngine/glm.git
+[submodule "Libraries/spdlog"]
+	path = Libraries/spdlog
+	url = https://github.com/RemeEngine/spdlog.git
+[submodule "Libraries/stb"]
+	path = Libraries/stb
+	url = https://github.com/RemeEngine/stb.git
+	

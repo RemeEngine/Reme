@@ -1,0 +1,20 @@
+# Build / Generated files
+Build
+out
+
+# Visual Studio Code folder
+.vscode
+
+# Visual Studio files and folder
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+
+# Makefile
+Makefile
+
+# Miscellaneous files
+imgui.ini
+*.log
