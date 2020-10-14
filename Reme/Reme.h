@@ -2,6 +2,7 @@
 
 #include <Reme/Core/Application.h>
 #include <Reme/Core/Core.h>
+#include <Reme/Events/Input.h>
 #include <Reme/Renderer/Color.h>
 #include <Reme/Renderer/OrthographicCamera.h>
 #include <Reme/Renderer/PerspectiveCamera.h>
