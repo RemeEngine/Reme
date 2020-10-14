@@ -46,7 +46,7 @@ public:
         AssetManager::put_asset(*this);
     }
 
-    virtual ~Asset();
+    virtual ~Asset() {};
 
     u32 uid() const { return m_uid; }
 

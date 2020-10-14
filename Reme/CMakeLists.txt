@@ -1,6 +1,8 @@
 set(SOURCES
+    Core/Asset.cpp
     Core/Application.cpp
     Core/Log.cpp
+    Core/StbImpl.cpp
     Core/Window.cpp
     Impl/GLFW_Window.cpp
     Impl/OpenGL/OpenGL_Buffers.cpp
@@ -10,6 +12,7 @@ set(SOURCES
     Impl/OpenGL/OpenGL_VertexArray.cpp
     Renderer/Buffers.cpp
     Renderer/Color.cpp
+    Renderer/Image.cpp
     Renderer/OrthographicCamera.cpp
     Renderer/PerspectiveCamera.cpp 
     Renderer/Renderer.cpp
@@ -22,4 +25,4 @@ set(SOURCES
 )
 
 add_library(Reme STATIC ${SOURCES})
-target_link_libraries(Reme glfw imgui)
+target_link_libraries(Reme glad glfw imgui)

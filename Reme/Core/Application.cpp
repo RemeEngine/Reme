@@ -1,5 +1,8 @@
 #include <Reme/Core/Application.h>
 
+#include <Reme/Renderer/OrthographicCamera.h>
+#include <Reme/Renderer/Renderer.h>
+#include <Reme/Renderer/Renderer2D.h>
 #include <chrono>
 
 namespace Reme {
@@ -13,10 +16,13 @@ Application::Application(const WindowProps& props)
 
     m_window = Window::construct(props);
     m_window->enable_VSync(true);
+
+    Renderer::initialize();
 }
 
 Application::~Application()
 {
+    Renderer::shutdown();
 }
 
 void Application::exec()
@@ -26,6 +32,8 @@ void Application::exec()
     TimeStamp current_time;
     TimeStamp last_time = std::chrono::high_resolution_clock::now();
     float elapsed_time;
+
+    auto cam = make<OrthographicCamera>(0, m_window->width(), 0, m_window->height());
 
     while (m_running) {
         m_window->poll_event();
@@ -38,6 +46,9 @@ void Application::exec()
         }
 
         // Render code
+        Renderer2D::begin(cam);
+        Renderer2D::fill_rect(Color::RED, 0, 0, 200, 200);
+        Renderer2D::end();
 
         last_time = current_time;
         m_window->swap_buffers();
