@@ -5,14 +5,14 @@
 
 namespace Reme {
 
-RefPtr<Shader> Shader::create(const std::string& file_path)
+RefPtr<Shader> Shader::create(const std::string& filepath)
 {
     switch (RendererAPI::api()) {
     case RendererAPI::None:
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
         return nullptr;
     case RendererAPI::OpenGL:
-        return make<OpenGL_Shader>(file_path);
+        return make<OpenGL_Shader>(filepath);
     }
 
     CORE_ASSERT(false, "Unknown RendererAPI!");

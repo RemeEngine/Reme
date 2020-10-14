@@ -7,19 +7,19 @@
 
 namespace Reme {
 
-OpenGL_Shader::OpenGL_Shader(const std::string& file_path)
+OpenGL_Shader::OpenGL_Shader(const std::string& filepath)
 {
     std::unordered_map<u32, std::string> sources;
-    sources[GL_VERTEX_SHADER] = ReadFile(file_path + ".vert");
-    sources[GL_FRAGMENT_SHADER] = ReadFile(file_path + ".frag");
+    sources[GL_VERTEX_SHADER] = ReadFile(filepath + ".vert");
+    sources[GL_FRAGMENT_SHADER] = ReadFile(filepath + ".frag");
     compile(sources);
 
     // Extract name from filepath
-    auto last_slash_pos = file_path.find_last_of("/\\");
+    auto last_slash_pos = filepath.find_last_of("/\\");
     last_slash_pos = last_slash_pos == std::string::npos ? 0 : last_slash_pos + 1;
-    auto last_dot_pos = file_path.rfind('.');
-    auto count = last_dot_pos == std::string::npos ? file_path.size() - last_slash_pos : last_dot_pos - last_slash_pos;
-    m_name = file_path.substr(last_slash_pos, count);
+    auto last_dot_pos = filepath.rfind('.');
+    auto count = last_dot_pos == std::string::npos ? filepath.size() - last_slash_pos : last_dot_pos - last_slash_pos;
+    m_name = filepath.substr(last_slash_pos, count);
 }
 
 OpenGL_Shader::OpenGL_Shader(const std::string& name, const std::string& vertex_source, const std::string& fragment_source)
