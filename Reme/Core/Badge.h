@@ -6,12 +6,14 @@ namespace Reme {
 
 template<typename T>
 class Badge {
-    MAKE_NONCOPYABLE(Badge)
-    MAKE_NONMOVABLE(Badge)
-
-private:
+    friend T;
     Badge() {}
-    friend class T;
+
+    Badge(const Badge&) = delete;
+    Badge& operator=(const Badge&) = delete;
+
+    Badge(Badge&&) = delete;
+    Badge& operator=(Badge&&) = delete;
 };
 
 } // namespace Reme
