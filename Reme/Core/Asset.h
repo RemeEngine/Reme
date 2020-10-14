@@ -23,9 +23,9 @@ public:
     {
         auto result = get_asset(uid);
         if (result == nullptr)
-            return result;
+            return nullptr;
 
-        return dynamic_cast<T>(result.get());
+        return std::dynamic_pointer_cast<T>(result);
     }
 
     static u32 next_uid();

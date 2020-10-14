@@ -9,7 +9,7 @@
         ::Reme::Log::initialize(#AppClass);                   \
                                                               \
         auto app = new AppClass();                            \
-        app->exec();                                          \
+        app->run();                                           \
         delete app;                                           \
         return 0;                                             \
     }

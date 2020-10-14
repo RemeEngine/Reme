@@ -4,6 +4,8 @@ set(SOURCES
     Core/Log.cpp
     Core/StbImpl.cpp
     Core/Window.cpp
+    Events/Input.cpp
+    GUI/Node.cpp
     Impl/GLFW_Window.cpp
     Impl/OpenGL/OpenGL_Buffers.cpp
     Impl/OpenGL/OpenGL_RendererAPI.cpp

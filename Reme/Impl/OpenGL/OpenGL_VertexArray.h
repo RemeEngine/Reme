@@ -6,7 +6,8 @@ namespace Reme {
 class OpenGL_VertexArray : public VertexArray {
 public:
     OpenGL_VertexArray();
-    ~OpenGL_VertexArray();
+    virtual ~OpenGL_VertexArray() override;
+
     void bind() override;
     void unbind() override;
 

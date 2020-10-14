@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Reme/Core/Core.h>
+#include <Reme/Events/Event.h>
+#include <Reme/GUI/Node.h>
 
 namespace Reme {
 
@@ -11,9 +13,10 @@ struct WindowProps {
 
 class Window {
 public:
+    using EventFunctionCB = std::function<void(Event&)>;
     static OwnPtr<Window> construct(const WindowProps& props);
 
-    virtual ~Window() = default;
+    virtual ~Window() {};
 
     virtual void poll_event() = 0;
     virtual void swap_buffers() = 0;
@@ -30,6 +33,19 @@ public:
     virtual bool is_VSync() const = 0;
 
     virtual void* native_window() const = 0;
+    virtual void set_event_callback(EventFunctionCB) = 0;
+
+    void set_current_scene(RefPtr<GUI::Node> scene) { m_scene = scene; }
+    RefPtr<GUI::Node> current_scene() { return m_scene; }
+
+    void on_event(Event& event)
+    {
+        if (m_scene)
+            m_scene->on_event({}, event);
+    }
+
+private:
+    RefPtr<GUI::Node> m_scene;
 };
 
 } // namespace Reme

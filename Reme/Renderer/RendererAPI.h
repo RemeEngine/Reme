@@ -31,6 +31,8 @@ public:
 
     static RendererAPI* create();
 
+    virtual ~RendererAPI() {};
+
     virtual void initialize() = 0;
     virtual void set_viewport(u32 x, u32 y, u32 width, u32 height) = 0;
     virtual void set_clear_color(const Color& color) = 0;

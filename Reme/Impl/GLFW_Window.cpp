@@ -2,6 +2,9 @@
 
 #include <GLFW/glfw3.h>
 #include <Reme/Core/Core.h>
+#include <Reme/Events/ApplicationEvent.h>
+#include <Reme/Events/KeyEvent.h>
+#include <Reme/Events/MouseEvent.h>
 
 namespace Reme {
 
@@ -42,6 +45,83 @@ GLFW_Window::GLFW_Window(const WindowProps& props)
         CORE_LOG_ERROR("Failed to create GLFW window!");
         exit(EXIT_FAILURE);
     }
+
+    glfwSetWindowUserPointer(m_window, &m_data);
+
+    glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow* window, int width, int height) {
+        WindowData* data = (WindowData*)glfwGetWindowUserPointer(window);
+        data->width = width;
+        data->height = height;
+
+        WindowResizeEvent e(width, height);
+        data->on_event(e);
+    });
+
+    glfwSetWindowCloseCallback(m_window, [](GLFWwindow* window) {
+        WindowData* data = (WindowData*)glfwGetWindowUserPointer(window);
+        WindowCloseEvent event;
+        data->on_event(event);
+    });
+
+    glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, MAYBE_UNUSED int scancode, int action, MAYBE_UNUSED int mods) {
+        WindowData* data = (WindowData*)glfwGetWindowUserPointer(window);
+
+        switch (action) {
+        case GLFW_PRESS: {
+            KeyDownEvent event(static_cast<KeyCode>(key), 0);
+            data->on_event(event);
+            break;
+        }
+
+        case GLFW_RELEASE: {
+            KeyUpEvent event(static_cast<KeyCode>(key));
+            data->on_event(event);
+            break;
+        }
+
+        case GLFW_REPEAT: {
+            KeyDownEvent event(static_cast<KeyCode>(key), 1);
+            data->on_event(event);
+            break;
+        }
+        }
+    });
+
+    glfwSetCharCallback(m_window, [](GLFWwindow* window, unsigned int keycode) {
+        WindowData* data = (WindowData*)glfwGetWindowUserPointer(window);
+        KeyPressEvent event(static_cast<KeyCode>(keycode));
+        data->on_event(event);
+    });
+
+    glfwSetCursorPosCallback(m_window, [](GLFWwindow* window, double xpos, double ypos) {
+        WindowData* data = (WindowData*)glfwGetWindowUserPointer(window);
+        MouseMoveEvent event((float)xpos, (float)ypos);
+        data->on_event(event);
+    });
+
+    glfwSetMouseButtonCallback(m_window, [](GLFWwindow* window, int button, int action, int) {
+        WindowData* data = (WindowData*)glfwGetWindowUserPointer(window);
+
+        switch (action) {
+        case GLFW_PRESS: {
+            MouseDownEvent event(static_cast<MouseCode>(button));
+            data->on_event(event);
+            break;
+        }
+        case GLFW_RELEASE: {
+            MouseUpEvent event(static_cast<MouseCode>(button));
+            data->on_event(event);
+            break;
+        }
+        }
+    });
+
+    glfwSetScrollCallback(m_window, [](GLFWwindow* window, double xOffset, double yOffset) {
+        WindowData* data = (WindowData*)glfwGetWindowUserPointer(window);
+
+        MouseScrollEvent event((float)xOffset, (float)yOffset);
+        data->on_event(event);
+    });
 
     glfwSetWindowUserPointer(m_window, &m_data);
     make_context_current();

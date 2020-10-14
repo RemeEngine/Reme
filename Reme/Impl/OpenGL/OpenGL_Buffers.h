@@ -7,7 +7,7 @@ namespace Reme {
 class OpenGL_VertexBuffer : public VertexBuffer {
 public:
     OpenGL_VertexBuffer(u32 byte_size, bool is_static);
-    ~OpenGL_VertexBuffer();
+    virtual ~OpenGL_VertexBuffer() override;
 
     void bind() override;
     void unbind() override;

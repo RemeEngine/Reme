@@ -8,7 +8,7 @@ class OpenGL_Texture : public Texture {
 public:
     OpenGL_Texture(u32 width, u32 height);
     OpenGL_Texture(const RefPtr<Image>& image);
-    ~OpenGL_Texture();
+    virtual ~OpenGL_Texture() override;
 
     inline u32 width() const override { return m_width; }
     inline u32 height() const override { return m_height; }

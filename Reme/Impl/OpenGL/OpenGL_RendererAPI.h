@@ -6,6 +6,8 @@ namespace Reme {
 
 class OpenGL_RendererAPI : public RendererAPI {
 public:
+    virtual ~OpenGL_RendererAPI() override {};
+
     virtual void initialize() override;
     virtual void set_viewport(u32 x, u32 y, u32 width, u32 height) override;
     virtual void set_clear_color(const Color& color) override;

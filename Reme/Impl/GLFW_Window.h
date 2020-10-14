@@ -9,7 +9,7 @@ namespace Reme {
 class GLFW_Window : public Window {
 public:
     GLFW_Window(const WindowProps& props);
-    ~GLFW_Window();
+    virtual ~GLFW_Window() override;
 
     virtual void poll_event() override;
     virtual void swap_buffers() override;
@@ -26,6 +26,7 @@ public:
     virtual bool is_VSync() const override;
 
     virtual void* native_window() const override { return m_window; };
+    virtual void set_event_callback(EventFunctionCB callback) override { m_data.on_event = callback; }
 
 private:
     GLFWwindow* m_window;
@@ -34,6 +35,7 @@ private:
         bool is_VSync;
         u32 width, height;
         std::string title;
+        EventFunctionCB on_event;
     };
 
     WindowData m_data;
