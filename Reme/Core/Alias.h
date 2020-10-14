@@ -42,13 +42,13 @@ using nullptr_t = decltype(nullptr);
 #define BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
 #define MAKE_NONCOPYABLE(c) \
-private:                         \
-    c(const c&) = delete;        \
+private:                    \
+    c(const c&) = delete;   \
     c& operator=(const c&) = delete
 
 #define MAKE_NONMOVABLE(c) \
-private:                        \
-    c(c&&) = delete;            \
+private:                   \
+    c(c&&) = delete;       \
     c& operator=(c&&) = delete
 
 // Alias smart pointer
