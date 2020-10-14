@@ -8,7 +8,7 @@
 namespace Reme {
 class Log {
 public:
-    static void init(const char*);
+    static void initialize(const char*);
     inline static const RefPtr<spdlog::logger>& core_logger() { return s_core_logger; }
     inline static const RefPtr<spdlog::logger>& logger() { return s_client_logger; }
 

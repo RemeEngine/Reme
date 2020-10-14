@@ -6,7 +6,7 @@
 #define REME_APP_ENTRY(AppClass)                 \
     int main(MAYBE_UNUSED int argc, char** argv) \
     {                                            \
-        ::Reme::Log::init(#AppClass);            \
+        ::Reme::Log::initialize(#AppClass);      \
                                                  \
         auto app = new AppClass();               \
         app->exec();                             \
