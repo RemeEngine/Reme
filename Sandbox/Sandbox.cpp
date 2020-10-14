@@ -3,14 +3,13 @@
 #include <Reme/Reme.h>
 
 class Scene : public Reme::GUI::Node {
-public:
-    Scene()
+protected:
+    virtual void on_enter() override
     {
         auto& window = Application::the().window();
         cam = Reme::make<OrthographicCamera>(0, window.width(), 0, window.height());
     }
 
-protected:
     virtual void render() override
     {
         Renderer2D::begin(cam);
