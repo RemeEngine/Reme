@@ -76,7 +76,6 @@ public:
         u32 vertex_index;
 
         std::vector<RefPtr<Texture>> textures;
-        u32 texture_index;
     };
 
 private:

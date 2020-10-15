@@ -22,9 +22,6 @@ void Renderer2D::initialize()
 
     MAX_TEXTURE_UNIT = RenderCommand::max_texture_unit();
 
-    for (u32 i = 0; i < MAX_TEXTURE_UNIT; i++)
-        s_data.textures.emplace_back(Texture::DEFAULT);
-
     s_data.flat_color_shader = Shader::create("Flat Shader",
         // Vertex shader
         "#version 330 core\n"
@@ -111,7 +108,6 @@ void Renderer2D::initialize()
     delete[] indicies;
 
     s_data.vertex_index = 0;
-    s_data.texture_index = 0;
 }
 
 void Renderer2D::shutdown()
@@ -144,18 +140,15 @@ void Renderer2D::flush()
     if (s_data.vertex_index == 0)
         return;
 
-    for (u32 i = 0; i < s_data.texture_index; i++) {
-        if (!s_data.textures[i])
-            s_data.textures[i]->bind(i);
+    for (u32 i = 0; i < s_data.textures.size(); i++) {
+        s_data.textures[i]->bind(i);
     }
 
     s_data.VBO->set_data((float*)s_data.buffer, 0, s_data.vertex_index * sizeof(Vertex));
-    RenderCommand::draw_indexed(DrawMode::TRIANGLES, s_data.vertex_index / 4 * 6 * sizeof(u32));
+    RenderCommand::draw_indexed(DrawMode::TRIANGLES, s_data.vertex_index / 4 * 6);
 
     s_data.vertex_index = 0;
-    s_data.texture_index = 0;
-    for (auto& p : s_data.textures)
-        p.reset();
+    s_data.textures.clear();
 }
 
 void Renderer2D::draw_partial_texture(
@@ -165,7 +158,7 @@ void Renderer2D::draw_partial_texture(
     const Color& color)
 {
     float texture_index = -1.0f;
-    for (u32 i = 0; i < s_data.texture_index; i++) {
+    for (u32 i = 0; i < s_data.textures.size(); i++) {
         if (texture->uid() == s_data.textures[i]->uid()) {
             texture_index = (float)i;
             break;
@@ -173,14 +166,13 @@ void Renderer2D::draw_partial_texture(
     }
 
     if (
-        s_data.vertex_index + 4 >= MAX_QUAD_COUNT || (texture_index == -1.0f && s_data.texture_index == MAX_TEXTURE_UNIT)) {
+        s_data.vertex_index + 4 >= MAX_QUAD_COUNT || (texture_index == -1.0f && s_data.textures.size() == MAX_TEXTURE_UNIT)) {
         flush();
     }
 
     if (texture_index == -1.0f) {
-        s_data.textures[s_data.texture_index] = texture;
-        texture_index = (float)s_data.texture_index;
-        s_data.texture_index++;
+        texture_index = (float)s_data.textures.size();
+        s_data.textures.push_back(texture);
     }
 
     const glm::mat3& transform_matrix = s_tranform_stack.back();
@@ -191,29 +183,33 @@ void Renderer2D::draw_partial_texture(
     source_width = source_width / texture->width();
     source_height = source_height / texture->height();
 
-    s_data.buffer[s_data.vertex_index].position = transform_matrix * glm::vec3(dest_x, dest_y, 1.0f);
-    s_data.buffer[s_data.vertex_index].uv = { source_x, source_x };
-    s_data.buffer[s_data.vertex_index].color = float_color;
-    s_data.buffer[s_data.vertex_index].texture_index = texture_index;
-    s_data.vertex_index++;
+    s_data.buffer[s_data.vertex_index++] = {
+        .position = transform_matrix * glm::vec3(dest_x, dest_y, 1.0f),
+        .uv = { source_x, source_y },
+        .color = float_color,
+        .texture_index = texture_index,
+    };
 
-    s_data.buffer[s_data.vertex_index].position = transform_matrix * glm::vec3(dest_x + dest_width, dest_y, 1.0f);
-    s_data.buffer[s_data.vertex_index].uv = { source_x + source_width, source_x };
-    s_data.buffer[s_data.vertex_index].color = float_color;
-    s_data.buffer[s_data.vertex_index].texture_index = texture_index;
-    s_data.vertex_index++;
+    s_data.buffer[s_data.vertex_index++] = {
+        .position = transform_matrix * glm::vec3(dest_x + dest_width, dest_y, 1.0f),
+        .uv = { source_x + source_width, source_y },
+        .color = float_color,
+        .texture_index = texture_index,
+    };
 
-    s_data.buffer[s_data.vertex_index].position = transform_matrix * glm::vec3(dest_x, dest_y + dest_height, 1.0f);
-    s_data.buffer[s_data.vertex_index].uv = { source_x, source_x + source_height };
-    s_data.buffer[s_data.vertex_index].color = float_color;
-    s_data.buffer[s_data.vertex_index].texture_index = texture_index;
-    s_data.vertex_index++;
+    s_data.buffer[s_data.vertex_index++] = {
+        .position = transform_matrix * glm::vec3(dest_x, dest_y + dest_height, 1.0f),
+        .uv = { source_x, source_y + source_height },
+        .color = float_color,
+        .texture_index = texture_index,
+    };
 
-    s_data.buffer[s_data.vertex_index].position = transform_matrix * glm::vec3(dest_x + dest_width, dest_y + dest_height, 1.0f);
-    s_data.buffer[s_data.vertex_index].uv = { source_x + source_width, source_x + source_height };
-    s_data.buffer[s_data.vertex_index].color = float_color;
-    s_data.buffer[s_data.vertex_index].texture_index = texture_index;
-    s_data.vertex_index++;
+    s_data.buffer[s_data.vertex_index++] = {
+        .position = transform_matrix * glm::vec3(dest_x + dest_width, dest_y + dest_height, 1.0f),
+        .uv = { source_x + source_width, source_y + source_height },
+        .color = float_color,
+        .texture_index = texture_index,
+    };
 }
 
 void Renderer2D::push_state()
@@ -223,8 +219,8 @@ void Renderer2D::push_state()
 
 void Renderer2D::pop_state()
 {
-    if (s_tranform_stack.size() > 1)
-        s_tranform_stack.pop_back();
+    ASSERT(s_tranform_stack.size() > 1, "Must call push_state() before pop_state()");
+    s_tranform_stack.pop_back();
 }
 
 const glm::mat3& Renderer2D::transformation_matrix()

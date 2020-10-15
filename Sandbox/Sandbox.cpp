@@ -15,6 +15,8 @@ protected:
         imgs[1] = Texture::create("assets/rem-bb.png");
         imgs[2] = Texture::create("assets/rem-sleeping-rose.png");
         imgs[3] = Texture::create("assets/you-waifu-material.jpg");
+
+        RenderCommand::set_clear_color(Color::BLACK);
     }
 
     virtual void render() override
@@ -23,7 +25,6 @@ protected:
         auto height = Application::the().window().height();
 
         Renderer2D::begin(cam);
-        RenderCommand::clear();
 
         float y = 0.0f;
         do {
@@ -39,14 +40,14 @@ protected:
             }
         } while (y < height);
 
-        // for (u32 x = 0; x < width; x += rectSize) {
-        //     for (u32 y = 0; y < height; y += rectSize) {
-        //         Renderer2D::fill_rect(
-        //             Color(x % 255, y % 255, 255),
-        //             x, y,
-        //             rectSize - 2.0f, rectSize - 2.0f);
-        //     }
-        // }
+        for (u32 x = 0; x < width; x += rectSize) {
+            for (u32 y = 0; y < height; y += rectSize) {
+                Renderer2D::fill_rect(
+                    Color(x % 255, y % 255, 255),
+                    x, y,
+                    rectSize - 2.0f, rectSize - 2.0f);
+            }
+        }
 
         Renderer2D::fill_rect(Color::GREEN, 0.0f, 100.0f, 50.0f, 50.0f);
         Renderer2D::fill_rect(Color::RED, 100.0f, 100.0f, 50.0f, 50.0f);
