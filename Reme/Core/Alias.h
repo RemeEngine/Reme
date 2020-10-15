@@ -65,15 +65,19 @@ constexpr OwnPtr<T> make_own(Args&&... args)
 template<typename T>
 using RefPtr = std::shared_ptr<T>;
 
-template<typename T, typename... Args>
-constexpr RefPtr<T> make(Args&&... args)
-{
-    return std::make_shared<T>(std::forward<Args>(args)...);
-}
-
 template<typename T>
 using RefCounted = std::enable_shared_from_this<T>;
 
 template<typename T>
 using WeakPtr = std::weak_ptr<T>;
+
+class Asset;
+
+template<typename T, typename... Args>
+constexpr RefPtr<T> make(Args&&... args)
+{
+    static_assert(!std::is_base_of_v<Asset, T>, "We must use 'make_asset' instead of 'make' to create this");
+    return std::make_shared<T>(std::forward<Args>(args)...);
+}
+
 } // namespace Reme
