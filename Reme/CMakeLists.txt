@@ -1,10 +1,10 @@
 set(SOURCES
     Core/Application.cpp
     Core/Asset.cpp
-    Core/Log.cpp
+    Core/Logger.cpp
     Core/StbImpl.cpp
     Core/Window.cpp
-    Debug/Backtrace.cpp
+    Debug/ExceptionHandler.cpp
     Events/Input.cpp
     GUI/Node.cpp
     Impl/GLFW_Window.cpp
