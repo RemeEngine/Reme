@@ -92,6 +92,9 @@ protected:
             rectSize += 100 * dt;
         if (Input::is_key_pressed(KeyCode::G))
             rectSize -= 100 * dt;
+
+        if (Input::is_key_pressed(KeyCode::P))
+            ASSERT(false, "P key pressed");
     }
 
 private:
