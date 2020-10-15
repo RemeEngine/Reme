@@ -12,6 +12,15 @@ Out
 **.vcxproj.filters
 **.vcxproj.user
 
+# Qt Creator files
+Reme.cflags
+Reme.config
+Reme.creator
+Reme.creator.user
+Reme.cxxflags
+Reme.files
+Reme.includes
+
 # Makefile
 Makefile
 
