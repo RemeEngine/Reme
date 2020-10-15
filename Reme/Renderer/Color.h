@@ -38,4 +38,6 @@ Color& operator+=(Color& left, const Color& right);
 Color& operator-=(Color& left, const Color& right);
 Color& operator*=(Color& left, const Color& right);
 
+static_assert(sizeof(Color) == 4, "Color must be tight packed 4 bytes struct!");
+
 } // namespace Reme
