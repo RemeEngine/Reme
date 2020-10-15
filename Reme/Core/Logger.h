@@ -1,11 +1,13 @@
 #pragma once
 
 #include <Reme/Core/Alias.h>
+
 #include <spdlog/spdlog.h>
 
 #include <spdlog/fmt/ostr.h>
 
 namespace Reme {
+
 class Logger {
 public:
     static void initialize(const char*);
@@ -16,6 +18,7 @@ private:
     static RefPtr<spdlog::logger> s_core_logger;
     static RefPtr<spdlog::logger> s_client_logger;
 };
+
 } // namespace Reme
 
 // Log macros
