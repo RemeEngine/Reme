@@ -75,7 +75,7 @@ public:
         Vertex* buffer;
         u32 vertex_index;
 
-        std::vector<WeakPtr<Texture>> textures;
+        std::vector<RefPtr<Texture>> textures;
         u32 texture_index;
     };
 

@@ -145,8 +145,8 @@ void Renderer2D::flush()
         return;
 
     for (u32 i = 0; i < s_data.texture_index; i++) {
-        if (!s_data.textures[i].expired())
-            s_data.textures[i].lock()->bind(i);
+        if (!s_data.textures[i])
+            s_data.textures[i]->bind(i);
     }
 
     s_data.VBO->set_data((float*)s_data.buffer, 0, s_data.vertex_index * sizeof(Vertex));
@@ -165,11 +165,8 @@ void Renderer2D::draw_partial_texture(
     const Color& color)
 {
     float texture_index = -1.0f;
-
     for (u32 i = 0; i < s_data.texture_index; i++) {
-        auto texture$i = s_data.textures[i].expired() ? Texture::DEFAULT : s_data.textures[i].lock();
-
-        if (texture->uid() == texture$i->uid()) {
+        if (texture->uid() == s_data.textures[i]->uid()) {
             texture_index = (float)i;
             break;
         }
