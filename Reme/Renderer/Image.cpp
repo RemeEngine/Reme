@@ -1,13 +1,14 @@
 #include <Reme/Renderer/Image.h>
 
 #include <stb/stb_image.h>
+#include <stdlib.h>
 
 namespace Reme {
 Image::Image(u32 width, u32 height)
     : m_width(width)
     , m_height(height)
-    , m_pixels(width * height)
 {
+    m_pixels = (Color*)calloc(width * height, sizeof(Color));
 }
 
 Image::Image(const std::string& path)
@@ -22,15 +23,13 @@ Image::Image(const std::string& path)
 
     m_width = width;
     m_height = height;
-    m_pixels.reserve(width * height);
-    memcpy(m_pixels.data(), data, width * height * sizeof(Color));
-
-    stbi_image_free(data);
+    m_pixels = (Color*)data;
     CORE_LOG_TRACE("Image loaded an {}x{} image \"{}\"", width, height, path);
 }
 
 Image::~Image()
 {
+    free(m_pixels);
 }
 
 void Image::set_pixels_data(const Color* pixels)

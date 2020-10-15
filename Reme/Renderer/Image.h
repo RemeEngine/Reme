@@ -22,10 +22,19 @@ public:
     inline u32 width() const { return m_width; }
     inline u32 height() const { return m_height; }
 
-    inline Color pixel(u32 x, u32 y) const { return m_pixels[x + y * m_width]; }
-    inline void set_pixel(u32 x, u32 y, const Color& color) { m_pixels[x + y * m_width] = color; }
+    inline Color pixel(u32 x, u32 y) const
+    {
+        ASSERT(x < m_width && y < m_height, "Access out of bound index");
+        return m_pixels[x + y * m_width];
+    }
 
-    inline const std::vector<Color>& pixels_data() const { return m_pixels; }
+    inline void set_pixel(u32 x, u32 y, const Color& color)
+    {
+        ASSERT(x < m_width && y < m_height, "Access out of bound index");
+        m_pixels[x + y * m_width] = color;
+    }
+
+    inline const Color* pixels_data() const { return m_pixels; }
     void set_pixels_data(const Color* pixels);
 
     inline void copy(const RefPtr<Image>& source, u32 dX, u32 dY, bool apply_alpha = false)
@@ -47,6 +56,6 @@ private:
     Image(const std::string& path);
 
     u32 m_width, m_height;
-    std::vector<Color> m_pixels;
+    Color* m_pixels;
 };
 } // namespace Reme
