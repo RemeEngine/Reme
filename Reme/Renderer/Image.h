@@ -8,18 +8,16 @@ class Image : public Asset {
 public:
     static RefPtr<Image> create(u32 width, u32 height)
     {
-        return make<Image>(width, height);
+        return AssetManager::adopt_asset<Image>(*new Image(width, height));
     }
 
     static RefPtr<Image> create(const std::string& path)
     {
-        return make<Image>(path);
+        return AssetManager::adopt_asset<Image>(*new Image(path));
     }
 
 public:
-    Image(u32 width, u32 height);
-    Image(const std::string& path);
-    ~Image();
+    virtual ~Image() override;
 
     inline u32 width() const { return m_width; }
     inline u32 height() const { return m_height; }
@@ -42,7 +40,12 @@ public:
 
     void copy(const RefPtr<Image>& source, u32 dX, u32 dY, u32 sX, u32 sY, u32 sW, u32 sH, bool apply_alpha = false);
 
+    virtual const char* class_name() const override { return "Image"; }
+
 private:
+    Image(u32 width, u32 height);
+    Image(const std::string& path);
+
     u32 m_width, m_height;
     std::vector<Color> m_pixels;
 };

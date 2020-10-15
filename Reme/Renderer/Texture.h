@@ -27,5 +27,7 @@ public:
     virtual void set_data(const Color* data, u32 x = 0, u32 y = 0, u32 width = 0, u32 height = 0) = 0;
 
     virtual void bind(u32 slot = 0) = 0;
+
+    virtual const char* class_name() const override { return "Texture"; }
 };
 } // namespace Reme

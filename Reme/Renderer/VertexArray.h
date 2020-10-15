@@ -18,6 +18,8 @@ public:
 
     virtual const std::vector<RefPtr<VertexBuffer>>& vertex_buffers() const = 0;
     virtual const RefPtr<IndexBuffer>& index_buffer() const = 0;
+
+    virtual const char* class_name() const override { return "VertexArray"; }
 };
 
 } // namespace Reme

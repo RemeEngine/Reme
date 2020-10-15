@@ -3,6 +3,7 @@
 #include <Reme/Core/Alias.h>
 
 namespace Reme {
+
 class Color {
 public:
     Color();

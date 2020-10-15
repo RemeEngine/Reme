@@ -10,9 +10,4 @@ u32 AssetManager::next_uid()
     return s_uid_count++;
 }
 
-void AssetManager::put_asset(Asset& asset)
-{
-    s_asset_map[asset.uid()] = asset.weak_from_this();
-}
-
 } // namespace Reme

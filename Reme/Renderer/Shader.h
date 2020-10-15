@@ -28,6 +28,8 @@ public:
     virtual void set_mat4(const std::string& name, const glm::mat4& matrix) = 0;
 
     virtual const std::string& name() const = 0;
+
+    virtual const char* class_name() const override { return "Shader"; }
 };
 
 } // namespace Reme

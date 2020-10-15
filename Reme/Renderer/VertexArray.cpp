@@ -12,7 +12,7 @@ RefPtr<VertexArray> VertexArray::create()
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
         return nullptr;
     case RendererAPI::OpenGL:
-        return make<OpenGL_VertexArray>();
+        return make_asset<OpenGL_VertexArray>();
     }
 
     CORE_ASSERT(false, "Unknown RendererAPI!");
