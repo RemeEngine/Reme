@@ -4,6 +4,7 @@
 #include <fstream>
 
 namespace Reme {
+
 std::string ReadFile(const std::string& filepath)
 {
     std::string result;
@@ -12,7 +13,7 @@ std::string ReadFile(const std::string& filepath)
         in.seekg(0, std::ios::end);
         size_t size = in.tellg();
         if (size != static_cast<size_t>(-1)) {
-            result.resize(size);
+            result.reserve(size);
             in.seekg(0, std::ios::beg);
             in.read(&result[0], size);
             in.close();
@@ -25,4 +26,5 @@ std::string ReadFile(const std::string& filepath)
 
     return result;
 }
+
 } // namespace Reme
