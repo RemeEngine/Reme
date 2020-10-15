@@ -25,6 +25,10 @@ endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Os -g1 -fno-exceptions -Wno-address-of-packed-member -Wundef -Wcast-qual -Wwrite-strings -Wimplicit-fallthrough -Wno-nonnull-compare -Wno-deprecated-copy -Wno-expansion-to-defined")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG -DGL_SILENCE_DEPRECATION -DGLFW_INCLUDE_NONE")
 
+# Flag to toggle optional functionality
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DREME_TRACE_ASSET_LIFETIME") # Show debug infomation about the lifetime of an asset
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DREME_RUN_PROFILE") # Profile the engine
+
 include_directories(SYSTEM Libraries)
 include_directories(SYSTEM Libraries/glad/include)
 include_directories(SYSTEM Libraries/GLFW/include)

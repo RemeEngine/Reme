@@ -23,6 +23,7 @@ protected:
         auto height = Application::the().window().height();
 
         Renderer2D::begin(cam);
+        RenderCommand::clear();
 
         float y = 0.0f;
         do {
@@ -110,7 +111,7 @@ public:
     MyApp()
         : Application({ "Sandbox", 1280, 720 })
     {
-        window().set_current_scene(make<Scene>());
+        window().set_current_scene(make_asset<Scene>());
     }
 };
 
