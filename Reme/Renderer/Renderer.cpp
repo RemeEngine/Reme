@@ -15,6 +15,9 @@ void Renderer::initialize()
 void Renderer::shutdown()
 {
     Renderer2D::shutdown();
+
+    Texture::DEFAULT.reset();
+    Texture::WHITE.reset();
 }
 
 void Renderer::on_window_resize(float width, float height)
