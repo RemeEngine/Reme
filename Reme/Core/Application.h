@@ -4,8 +4,6 @@
 #include <Reme/Events/ApplicationEvent.h>
 #include <Reme/Events/Event.h>
 
-int main(int, char**);
-
 namespace Reme {
 
 class Application {
