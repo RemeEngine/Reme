@@ -14,7 +14,7 @@
 
 namespace Reme::GUI {
 
-class Node : Asset {
+class Node : public Asset {
 public:
     Node(const std::string& name = "Node")
         : m_name(name) {};
@@ -40,6 +40,8 @@ public:
 
     virtual void on_enter() {}
     virtual void on_exit() {}
+
+    virtual const char* class_name() const override { return "GUI::Node"; }
 
 protected:
     virtual bool on_mouse_down(MouseDownEvent) { return false; }
