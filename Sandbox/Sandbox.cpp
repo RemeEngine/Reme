@@ -38,14 +38,14 @@ protected:
             }
         } while (y < height);
 
-        for (u32 x = 0; x < width; x += rectSize) {
-            for (u32 y = 0; y < height; y += rectSize) {
-                Renderer2D::fill_rect(
-                    Color(x % 255, y % 255, 255),
-                    x, y,
-                    rectSize - 2.0f, rectSize - 2.0f);
-            }
-        }
+        // for (u32 x = 0; x < width; x += rectSize) {
+        //     for (u32 y = 0; y < height; y += rectSize) {
+        //         Renderer2D::fill_rect(
+        //             Color(x % 255, y % 255, 255),
+        //             x, y,
+        //             rectSize - 2.0f, rectSize - 2.0f);
+        //     }
+        // }
 
         Renderer2D::fill_rect(Color::GREEN, 0.0f, 100.0f, 50.0f, 50.0f);
         Renderer2D::fill_rect(Color::RED, 100.0f, 100.0f, 50.0f, 50.0f);
@@ -79,9 +79,9 @@ protected:
         }
 
         if (Input::is_key_pressed(KeyCode::Q))
-            rot += 10 * dt;
+            rot += 50 * dt;
         if (Input::is_key_pressed(KeyCode::E))
-            rot -= 10 * dt;
+            rot -= 50 * dt;
 
         if (Input::is_key_pressed(KeyCode::R))
             imgWidth += 100 * dt;
