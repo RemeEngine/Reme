@@ -1,14 +1,14 @@
-#include <Reme/Core/Log.h>
+#include <Reme/Core/Logger.h>
 
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog-inl.h>
 
 namespace Reme {
-RefPtr<spdlog::logger> Log::s_core_logger;
-RefPtr<spdlog::logger> Log::s_client_logger;
+RefPtr<spdlog::logger> Logger::s_core_logger;
+RefPtr<spdlog::logger> Logger::s_client_logger;
 
-void Log::initialize(const char* app_class_name)
+void Logger::initialize(const char* app_class_name)
 {
     std::vector<spdlog::sink_ptr> logSinks;
     logSinks.emplace_back(make<spdlog::sinks::stdout_color_sink_mt>());

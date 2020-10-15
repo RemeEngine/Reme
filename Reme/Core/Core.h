@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Reme/Core/Alias.h>
-#include <Reme/Core/Log.h>
+#include <Reme/Core/Logger.h>
 
 // Platform detection using predefined macros
 #ifdef _WIN32
@@ -47,7 +47,7 @@
 #        define DEBUG_BREAK __debugbreak()
 #    else
 #        include <signal.h>
-#        define DEBUG_BREAK raise(SIGTRAP)
+#        define DEBUG_BREAK raise(SIGINT)
 #    endif
 
 #    define CORE_ASSERT(x, ...)                                   \
