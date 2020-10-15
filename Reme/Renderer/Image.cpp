@@ -23,7 +23,7 @@ Image::Image(const std::string& path)
     m_width = width;
     m_height = height;
     m_pixels.reserve(width * height);
-    memcpy(&m_pixels[0], data, m_pixels.size() * sizeof(Color));
+    memcpy(m_pixels.data(), data, width * height * sizeof(Color));
 
     stbi_image_free(data);
     CORE_LOG_TRACE("Image loaded an {}x{} image \"{}\"", width, height, path);
