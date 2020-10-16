@@ -84,7 +84,7 @@ public:
         json << "\"name\":\"" << name << "\",";
         json << "\"ph\":\"X\",";
         json << "\"pid\":0,";
-        json << "\"tid\":" << result.thread_id << ",";
+        json << "\"tid\":" << std::hash<std::thread::id>()(result.thread_id) << ",";
         json << "\"ts\":" << result.start.count();
         json << "}";
 

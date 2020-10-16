@@ -1,11 +1,14 @@
 #include <Reme/GUI/Node.h>
 
+#include <Reme/Debug/Instrumentor.h>
 #include <algorithm>
 
 namespace Reme::GUI {
 
 void Node::add_child(RefPtr<Node> child)
 {
+    PROFILE_FUNCTION();
+
     ASSERT(!child->parent_uid(), "This node already been added");
 
     m_should_reorder_children = true;
@@ -18,6 +21,8 @@ void Node::add_child(RefPtr<Node> child)
 
 void Node::remove_child(RefPtr<Node> child)
 {
+    PROFILE_FUNCTION();
+
     auto it = std::find_if(m_children.begin(), m_children.end(), [&child](auto node) {
         return node->uid() == child->uid();
     });
@@ -31,6 +36,8 @@ void Node::remove_child(RefPtr<Node> child)
 
 void Node::sort_children_by_z_order()
 {
+    PROFILE_FUNCTION();
+
     if (!m_should_reorder_children)
         return;
 
@@ -42,6 +49,8 @@ void Node::sort_children_by_z_order()
 
 void Node::on_event(Badge<Window>, Event& event)
 {
+    PROFILE_FUNCTION();
+
     EventDispatcher dispatcher(event);
     dispatcher.dispatch<KeyDownEvent>(BIND_EVENT_FN(Node::on_key_down));
     dispatcher.dispatch<KeyUpEvent>(BIND_EVENT_FN(Node::on_key_up));

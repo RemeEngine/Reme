@@ -1,6 +1,7 @@
 #include <Reme/Renderer/Renderer2D.h>
-#include <Reme/Renderer/RendererAPI.h>
 
+#include <Reme/Debug/Instrumentor.h>
+#include <Reme/Renderer/RendererAPI.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/matrix_transform_2d.hpp>
 
@@ -17,6 +18,8 @@ static std::vector<glm::mat3> s_tranform_stack;
 
 void Renderer2D::initialize()
 {
+    PROFILE_FUNCTION();
+
     s_tranform_stack.push_back(glm::mat3(1.0f));
     s_data.buffer = new Vertex[MAX_QUAD_COUNT * 4];
 
@@ -112,6 +115,8 @@ void Renderer2D::initialize()
 
 void Renderer2D::shutdown()
 {
+    PROFILE_FUNCTION();
+
     s_data.flat_color_shader = nullptr;
     s_data.VBO = nullptr;
     s_data.VAO = nullptr;
@@ -120,6 +125,8 @@ void Renderer2D::shutdown()
 
 void Renderer2D::begin(const RefPtr<Camera>& cam)
 {
+    PROFILE_FUNCTION();
+
     RenderCommand::clear();
     s_data.flat_color_shader->bind();
     s_data.flat_color_shader->set_mat4("viewMat", cam->view_matrix());
@@ -130,6 +137,8 @@ void Renderer2D::begin(const RefPtr<Camera>& cam)
 
 void Renderer2D::end()
 {
+    PROFILE_FUNCTION();
+
     flush();
     s_data.VAO->unbind();
     RenderCommand::poll_errors();
@@ -137,6 +146,8 @@ void Renderer2D::end()
 
 void Renderer2D::flush()
 {
+    PROFILE_FUNCTION();
+
     if (s_data.vertex_index == 0)
         return;
 
@@ -157,6 +168,8 @@ void Renderer2D::draw_partial_texture(
     float dest_x, float dest_y, float dest_width, float dest_height,
     const Color& color)
 {
+    PROFILE_FUNCTION();
+
     float texture_index = -1.0f;
     for (u32 i = 0; i < s_data.textures.size(); i++) {
         if (texture->uid() == s_data.textures[i]->uid()) {

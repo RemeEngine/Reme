@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Reme/Debug/Instrumentor.h>
 #include <Reme/Renderer/Color.h>
 #include <Reme/Renderer/VertexArray.h>
 
@@ -55,6 +56,7 @@ class RenderCommand {
 public:
     inline static void initialize()
     {
+        PROFILE_FUNCTION();
         s_renderer_api->initialize();
     }
 

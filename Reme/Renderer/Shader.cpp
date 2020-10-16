@@ -7,6 +7,8 @@ namespace Reme {
 
 RefPtr<Shader> Shader::create(const std::string& filepath)
 {
+    PROFILE_FUNCTION();
+
     switch (RendererAPI::api()) {
     case RendererAPI::None:
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
@@ -21,6 +23,8 @@ RefPtr<Shader> Shader::create(const std::string& filepath)
 
 RefPtr<Shader> Shader::create(const std::string& name, const std::string& vertex_shader, const std::string& fragment_shader)
 {
+    PROFILE_FUNCTION();
+
     switch (RendererAPI::api()) {
     case RendererAPI::None:
         CORE_ASSERT(false, "RendererAPI::None is not supported!");

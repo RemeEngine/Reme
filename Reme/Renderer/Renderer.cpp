@@ -1,6 +1,7 @@
 #include <Reme/Renderer/Renderer.h>
 
 #include <Reme/Core/Application.h>
+#include <Reme/Debug/Instrumentor.h>
 #include <Reme/Renderer/OrthographicCamera.h>
 #include <Reme/Renderer/Renderer2D.h>
 #include <Reme/Renderer/RendererAPI.h>
@@ -11,6 +12,8 @@ RefPtr<OrthographicCamera> OrthographicCamera::DEFAULT;
 
 void Renderer::initialize()
 {
+    PROFILE_FUNCTION();
+
     // The order of these is important
     RenderCommand::initialize();
     Renderer2D::initialize();
@@ -22,6 +25,8 @@ void Renderer::initialize()
 
 void Renderer::shutdown()
 {
+    PROFILE_FUNCTION();
+
     Renderer2D::shutdown();
 
     Texture::DEFAULT.reset();

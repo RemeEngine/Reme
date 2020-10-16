@@ -11,6 +11,8 @@ RefPtr<Texture> Texture::WHITE;
 
 void Texture::initialize()
 {
+    PROFILE_FUNCTION();
+
     Texture::DEFAULT = Texture::create(2, 2);
     Color rgbTextureData[] = { Color::RED, Color::GREEN, Color::BLUE, Color::WHITE };
     Texture::DEFAULT->set_data(rgbTextureData);
@@ -23,6 +25,8 @@ void Texture::initialize()
 
 RefPtr<Texture> Texture::create(u32 width, u32 height)
 {
+    PROFILE_FUNCTION();
+
     switch (RendererAPI::api()) {
     case RendererAPI::None:
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
@@ -37,6 +41,8 @@ RefPtr<Texture> Texture::create(u32 width, u32 height)
 
 RefPtr<Texture> Texture::create(const RefPtr<Image>& image)
 {
+    PROFILE_FUNCTION();
+
     switch (RendererAPI::api()) {
     case RendererAPI::None:
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
@@ -51,8 +57,8 @@ RefPtr<Texture> Texture::create(const RefPtr<Image>& image)
 
 RefPtr<Texture> Texture::create(const std::string& path)
 {
-    // Create Texture from a path might fail
-    // TODO: Solve this
+    PROFILE_FUNCTION();
+
     switch (RendererAPI::api()) {
     case RendererAPI::None:
         CORE_ASSERT(false, "RendererAPI::None is not supported!");

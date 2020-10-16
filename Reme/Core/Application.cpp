@@ -1,5 +1,6 @@
 #include <Reme/Core/Application.h>
 
+#include <Reme/Debug/Instrumentor.h>
 #include <Reme/Events/Input.h>
 #include <Reme/Renderer/OrthographicCamera.h>
 #include <Reme/Renderer/Renderer.h>
@@ -12,6 +13,8 @@ Application* Application::s_instance = nullptr;
 
 Application::Application(const WindowProps& props)
 {
+    PROFILE_FUNCTION();
+
     CORE_ASSERT(!s_instance, "Application already exist!");
     s_instance = this;
 
@@ -24,11 +27,15 @@ Application::Application(const WindowProps& props)
 
 Application::~Application()
 {
+    PROFILE_FUNCTION();
+
     Renderer::shutdown();
 }
 
 void Application::run()
 {
+    PROFILE_FUNCTION();
+
     if (m_running)
         return;
 
@@ -40,18 +47,23 @@ void Application::run()
     float elapsed_time;
 
     while (m_running) {
+        PROFILE_SCOPE("main_loop");
+
         m_window->poll_event();
 
         current_time = std::chrono::high_resolution_clock::now();
         elapsed_time = std::chrono::duration<float>(current_time - last_time).count();
         while (elapsed_time >= m_delta_time) {
-            elapsed_time -= m_delta_time;
+            PROFILE_SCOPE("update_call");
 
+            elapsed_time -= m_delta_time;
             AppUpdateEvent e(m_delta_time);
             on_event(e);
         }
 
         if (!m_minimized) {
+            PROFILE_SCOPE("render_call");
+
             AppRenderEvent e;
             on_event(e);
         }
@@ -63,6 +75,8 @@ void Application::run()
 
 void Application::on_event(Event& event)
 {
+    PROFILE_FUNCTION();
+
     EventDispatcher dispatcher(event);
     dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::on_window_close));
     dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::on_window_resize));

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Reme/Core/Asset.h>
+#include <Reme/Debug/Instrumentor.h>
 #include <Reme/Renderer/Color.h>
 
 namespace Reme {
@@ -8,11 +9,13 @@ class Image : public Asset {
 public:
     static RefPtr<Image> create(u32 width, u32 height)
     {
+        PROFILE_FUNCTION();
         return AssetManager::adopt_asset<Image>(*new Image(width, height));
     }
 
     static RefPtr<Image> create(const std::string& path)
     {
+        PROFILE_FUNCTION();
         return AssetManager::adopt_asset<Image>(*new Image(path));
     }
 
