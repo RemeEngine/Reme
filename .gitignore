@@ -27,3 +27,4 @@ Makefile
 # Miscellaneous files
 imgui.ini
 *.log
+*profile.json
