@@ -29,3 +29,8 @@ set(SOURCES
 
 add_library(Reme STATIC ${SOURCES})
 target_link_libraries(Reme glad glfw imgui)
+
+add_library(ProfileReme STATIC ${SOURCES})
+target_compile_definitions(ProfileReme PUBLIC -DREME_RUN_PROFILE)
+target_link_libraries(ProfileReme glad glfw imgui)
+

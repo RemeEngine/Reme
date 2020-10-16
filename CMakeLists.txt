@@ -27,7 +27,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG -DGL_SILENCE_DEPRECATION -DGLFW_
 
 # Flag to toggle optional functionality
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DREME_TRACE_ASSET_LIFETIME") # Show debug infomation about the lifetime of an asset
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DREME_RUN_PROFILE") # Profile the engine
 
 include_directories(SYSTEM Libraries)
 include_directories(SYSTEM Libraries/glad/include)
