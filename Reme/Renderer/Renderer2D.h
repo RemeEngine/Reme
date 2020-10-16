@@ -4,6 +4,7 @@
 #include <Reme/Renderer/Buffers.h>
 #include <Reme/Renderer/Camera.h>
 #include <Reme/Renderer/Color.h>
+#include <Reme/Renderer/OrthographicCamera.h>
 #include <Reme/Renderer/Shader.h>
 #include <Reme/Renderer/Texture.h>
 #include <Reme/Renderer/VertexArray.h>
@@ -16,7 +17,7 @@ public:
     static void initialize();
     static void shutdown();
 
-    static void begin(const RefPtr<Camera>& cam);
+    static void begin(const RefPtr<Camera>& cam = OrthographicCamera::DEFAULT);
     static void end();
 
     // Basic Quad Drawing API

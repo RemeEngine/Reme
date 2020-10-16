@@ -1,11 +1,14 @@
 #pragma once
 
+#include <Reme/Core/Core.h>
 #include <Reme/Renderer/Camera.h>
 
 namespace Reme {
 
 class OrthographicCamera : public Camera {
 public:
+    static RefPtr<OrthographicCamera> DEFAULT;
+
     OrthographicCamera(float left, float right, float bottom, float top);
     void set_projection(float left, float right, float bottom, float top);
 
