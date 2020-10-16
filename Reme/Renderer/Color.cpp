@@ -55,26 +55,26 @@ bool operator!=(const Color& left, const Color& right)
 
 Color operator+(const Color& left, const Color& right)
 {
-    return Color(u8(std::min(int(left.r) + right.r, 255)),
-        u8(std::min(int(left.g) + right.g, 255)),
-        u8(std::min(int(left.b) + right.b, 255)),
-        u8(std::min(int(left.a) + right.a, 255)));
+    return Color(u8(std::min(u32(left.r) + right.r, 255u)),
+        u8(std::min(u32(left.g) + right.g, 255u)),
+        u8(std::min(u32(left.b) + right.b, 255u)),
+        u8(std::min(u32(left.a) + right.a, 255u)));
 }
 
 Color operator-(const Color& left, const Color& right)
 {
-    return Color(u8(std::max(int(left.r) - right.r, 0)),
-        u8(std::max(int(left.g) - right.g, 0)),
-        u8(std::max(int(left.b) - right.b, 0)),
-        u8(std::max(int(left.a) - right.a, 0)));
+    return Color(u8(std::max(u32(left.r) - right.r, 0u)),
+        u8(std::max(u32(left.g) - right.g, 0u)),
+        u8(std::max(u32(left.b) - right.b, 0u)),
+        u8(std::max(u32(left.a) - right.a, 0u)));
 }
 
 Color operator*(const Color& left, const Color& right)
 {
-    return Color(u8(int(left.r) * right.r / 255),
-        u8(int(left.g) * right.g / 255),
-        u8(int(left.b) * right.b / 255),
-        u8(int(left.a) * right.a / 255));
+    return Color(u8(u32(left.r) * right.r / 255),
+        u8(u32(left.g) * right.g / 255),
+        u8(u32(left.b) * right.b / 255),
+        u8(u32(left.a) * right.a / 255));
 }
 
 Color& operator+=(Color& left, const Color& right)
