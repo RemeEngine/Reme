@@ -16,7 +16,7 @@ class Window {
 
 public:
     using EventFunctionCB = std::function<void(Event&)>;
-    static OwnPtr<Window> construct(const WindowProps& props);
+    static OwnPtr<Window> create(const WindowProps& props);
 
     virtual ~Window() {};
 

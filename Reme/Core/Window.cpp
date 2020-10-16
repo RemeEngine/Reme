@@ -5,7 +5,7 @@
 
 namespace Reme {
 
-OwnPtr<Window> Window::construct(const WindowProps& props)
+OwnPtr<Window> Window::create(const WindowProps& props)
 {
     return make_own<GLFW_Window>(props);
 }

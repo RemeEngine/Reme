@@ -15,7 +15,7 @@ Application::Application(const WindowProps& props)
     CORE_ASSERT(!s_instance, "Application already exist!");
     s_instance = this;
 
-    m_window = Window::construct(props);
+    m_window = Window::create(props);
     m_window->enable_VSync(true);
     m_window->set_event_callback(BIND_EVENT_FN(Application::on_event));
 
