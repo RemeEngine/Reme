@@ -6,7 +6,7 @@
 
 namespace Reme {
 
-class VertexBuffer : public Asset {
+class VertexBuffer : public AssetWrapper {
 public:
     static RefPtr<VertexBuffer> create(u32 byte_size, bool is_static = true);
 
@@ -23,7 +23,7 @@ private:
     BufferLayout m_layout;
 };
 
-class IndexBuffer : public Asset {
+class IndexBuffer : public AssetWrapper {
 public:
     static RefPtr<IndexBuffer> create(u32 byte_size, bool is_static = true);
 

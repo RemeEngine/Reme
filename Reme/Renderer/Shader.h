@@ -8,7 +8,7 @@
 
 namespace Reme {
 
-class Shader : public Asset {
+class Shader : public AssetWrapper {
 public:
     static RefPtr<Shader> create(const std::string& filepath);
     static RefPtr<Shader> create(const std::string& name, const std::string& vertex_shader, const std::string& fragment_shader);

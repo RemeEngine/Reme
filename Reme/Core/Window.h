@@ -12,6 +12,8 @@ struct WindowProps {
 };
 
 class Window {
+    MAKE_NONCOPYABLE(Window);
+
 public:
     using EventFunctionCB = std::function<void(Event&)>;
     static OwnPtr<Window> construct(const WindowProps& props);

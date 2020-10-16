@@ -7,7 +7,7 @@
 #include <string>
 
 namespace Reme {
-class Texture : public Asset {
+class Texture : public AssetWrapper {
 public:
     static RefPtr<Texture> DEFAULT;
     static RefPtr<Texture> WHITE;

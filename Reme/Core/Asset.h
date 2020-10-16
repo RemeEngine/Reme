@@ -80,6 +80,16 @@ private:
     u32 m_uid { 0 };
 };
 
+class AssetWrapper : public Asset {
+    MAKE_NONCOPYABLE(AssetWrapper);
+
+public:
+    virtual ~AssetWrapper() {};
+
+protected:
+    AssetWrapper() {};
+};
+
 template<typename T, typename... Args>
 ALWAYS_INLINE constexpr RefPtr<T> make_asset(Args&&... args)
 {
