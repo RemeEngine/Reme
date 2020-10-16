@@ -8,30 +8,47 @@ Image::Image(u32 width, u32 height)
     : m_width(width)
     , m_height(height)
 {
-    m_pixels = (Color*)calloc(width * height, sizeof(Color));
+    m_pixels = new Color[m_width * m_height];
 }
 
 Image::Image(const std::string& path)
 {
     int width, height, channels;
-    stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, STBI_rgb_alpha);
+    stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
     if (data == nullptr) {
         CORE_LOG_ERROR("Failed to load image \"{}\"", path);
+        CORE_LOG_INFO("Reason: {}", stbi_failure_reason());
         return;
     }
 
-    ASSERT(channels == 4, "Image for now only support RGBA8 color");
+    CORE_LOG_TRACE("Image loaded an {}x{} image with {} color channels \"{}\"", width, height, channels, path);
 
     m_width = width;
     m_height = height;
-    m_pixels = (Color*)data;
-    CORE_LOG_TRACE("Image loaded an {}x{} image \"{}\"", width, height, path);
+    m_pixels = new Color[m_width * m_height];
+    if (channels == 4) {
+        memcpy(m_pixels, data, m_width * m_height * sizeof(Color));
+        return;
+    }
+
+    u32 mod = channels;
+    if (channels == 2) { // Grayscale with alpha
+        mod = 1;
+        for (u32 i = 0; i < m_width * m_height; i++)
+            m_pixels[i].a = data[i * channels + 1];
+    }
+
+    for (u32 i = 0; i < m_width * m_height; i++) {
+        m_pixels[i].r = data[i * channels + (0 % mod)];
+        m_pixels[i].g = data[i * channels + (1 % mod)];
+        m_pixels[i].b = data[i * channels + (2 % mod)];
+    }
 }
 
 Image::~Image()
 {
-    free(m_pixels);
+    delete[] m_pixels;
 }
 
 void Image::set_pixels_data(const Color* pixels)

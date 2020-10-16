@@ -55,7 +55,8 @@ private:
     Image(u32 width, u32 height);
     Image(const std::string& path);
 
-    u32 m_width, m_height;
-    Color* m_pixels;
+    u32 m_width { 0 };
+    u32 m_height { 0 };
+    Color* m_pixels { nullptr };
 };
 } // namespace Reme
