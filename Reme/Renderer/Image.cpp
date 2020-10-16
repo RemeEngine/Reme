@@ -21,6 +21,8 @@ Image::Image(const std::string& path)
         return;
     }
 
+    ASSERT(channels == 4, "Image for now only support RGBA8 color");
+
     m_width = width;
     m_height = height;
     m_pixels = (Color*)data;
