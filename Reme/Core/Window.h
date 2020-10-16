@@ -54,6 +54,9 @@ public:
             m_scene->on_event({}, event);
     }
 
+protected:
+    Window() {}
+
 private:
     RefPtr<GUI::Node> m_scene;
 };
