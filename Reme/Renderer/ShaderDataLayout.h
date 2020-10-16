@@ -129,7 +129,7 @@ private:
         std::vector<BufferElement> new_elements;
         ShaderDataType type;
 
-        u8 loop, i;
+        u8 loop;
         for (auto& element : m_elements) {
             switch (element.type) {
             case ShaderDataType::Mat2:
@@ -149,6 +149,7 @@ private:
                 continue;
             }
 
+            u8 i;
             for (i = 0; i < loop; i++) {
                 new_elements.push_back({ type, element.name, element.normalized, element.divisor });
             }

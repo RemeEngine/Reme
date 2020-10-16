@@ -8,7 +8,8 @@ namespace Reme {
 
 struct WindowProps {
     std::string title;
-    u32 width, height;
+    u32 width;
+    u32 height;
 };
 
 class Window {
