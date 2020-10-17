@@ -34,7 +34,7 @@ void Renderer::shutdown()
     OrthographicCamera::DEFAULT.reset();
 }
 
-void Renderer::on_window_resize(float width, float height)
+void Renderer::on_window_resize(Badge<Application>, float width, float height)
 {
     RenderCommand::set_viewport(0, 0, width, height);
     OrthographicCamera::DEFAULT->set_projection(0, width, height, 0);

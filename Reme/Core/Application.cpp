@@ -99,7 +99,7 @@ bool Application::on_window_resize(WindowResizeEvent e)
     }
 
     m_minimized = false;
-    Renderer::on_window_resize(e.width(), e.height());
+    Renderer::on_window_resize({}, e.width(), e.height());
 
     return false;
 }
