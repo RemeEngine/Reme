@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 
 namespace Reme {
-static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+static GLenum shader_data_type_to_opengl_base_type(ShaderDataType type)
 {
     switch (type) {
     case ShaderDataType::Float:
@@ -65,7 +65,7 @@ void OpenGL_VertexArray::add_vertex_buffer(RefPtr<VertexBuffer> vertex_buffer)
         glVertexAttribPointer(
             m_vertex_buffer_index,
             element.component_count(),
-            ShaderDataTypeToOpenGLBaseType(element.type),
+            shader_data_type_to_opengl_base_type(element.type),
             element.normalized ? GL_TRUE : GL_FALSE,
             layout.stride(),
             (const void*)static_cast<FlatPtr>(element.offset));
