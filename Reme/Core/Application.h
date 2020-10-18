@@ -8,7 +8,11 @@ namespace Reme {
 
 class Application {
 public:
-    static inline Application& the() { return *s_instance; }
+    static inline Application& the()
+    {
+        ASSERT(s_instance, "Application need to be initialize before use");
+        return *s_instance;
+    }
 
     Application(const WindowProps& props = { "Reme Engine", 1280, 720 });
     virtual ~Application();
