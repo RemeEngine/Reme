@@ -1,7 +1,9 @@
 #include <Reme/GUI/Node.h>
 
 #include <Reme/Debug/Instrumentor.h>
+#include <Reme/Renderer/Renderer2D.h>
 #include <algorithm>
+#include <glm/gtx/matrix_transform_2d.hpp>
 
 namespace Reme::GUI {
 
@@ -57,16 +59,55 @@ void Node::on_event(Badge<Window>, Event& event)
     dispatcher.dispatch<MouseDownEvent>(BIND_EVENT_FN(Node::on_mouse_down));
     dispatcher.dispatch<MouseUpEvent>(BIND_EVENT_FN(Node::on_mouse_up));
     dispatcher.dispatch<MouseMoveEvent>(BIND_EVENT_FN(Node::on_mouse_move));
+    dispatcher.dispatch<AppRenderEvent>(BIND_EVENT_FN(Node::on_render));
+    dispatcher.dispatch<AppUpdateEvent>(BIND_EVENT_FN(Node::on_update));
+}
 
-    dispatcher.dispatch<AppRenderEvent>([this](auto) {
-        this->render();
-        return true;
+bool Node::on_update(AppUpdateEvent event)
+{
+    update(event.delta_time());
+    for_each_child([&event](auto& child) {
+        child->on_update(event);
     });
 
-    dispatcher.dispatch<AppUpdateEvent>([this](AppUpdateEvent e) {
-        this->update(e.delta_time());
-        return true;
+    return false;
+}
+
+bool Node::on_render(AppRenderEvent event)
+{
+    if (m_should_reorder_children)
+        sort_children_by_z_order();
+
+    Renderer2D::push_state();
+
+    glm::vec2 relative_anchor_pos = transformed_size() * anchor_point();
+    Renderer2D::translate(position());
+    Renderer2D::translate(relative_anchor_pos);
+    Renderer2D::rotate(rotation());
+    Renderer2D::scale(scale());
+    Renderer2D::translate(-relative_anchor_pos);
+
+    render();
+    for_each_child([&event](auto& child) {
+        child->on_render(event);
     });
+
+    Renderer2D::pop_state();
+    return false;
+}
+
+glm::mat3 Node::transformation_matrix() const
+{
+    glm::vec2 relative_anchor_pos = transformed_size() * anchor_point();
+
+    glm::mat3 matrix(1.0f);
+    matrix = glm::translate(matrix, position());
+    matrix = glm::translate(matrix, relative_anchor_pos);
+    matrix = glm::rotate(matrix, rotation());
+    matrix = glm::scale(matrix, scale());
+    matrix = glm::translate(matrix, -relative_anchor_pos);
+
+    return matrix;
 }
 
 } // namespace Reme::GUI
