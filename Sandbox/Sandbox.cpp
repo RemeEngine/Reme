@@ -4,27 +4,37 @@
 
 using namespace Reme;
 
-class Scene : public GUI::Node {
-protected:
-    virtual void on_enter() override
+class TestNode : public GUI::Node {
+public:
+    TestNode()
     {
-        auto& window = Application::the().window();
-        cam = make<OrthographicCamera>(0, window.width(), window.height(), 0);
+        auto miku = GUI::Sprite::create("assets/miku-cutie.jpg");
+        miku->set_scale(0.5);
 
+        add_child(miku);
+
+        auto sprite = GUI::Sprite::create("assets/gray.jpeg");
+        sprite->set_position({ 500, 500 });
+        sprite->set_scale(0.1);
+        sprite->set_rotation(3);
+        add_child(sprite);
+    }
+};
+
+class BenchmarkNode : public GUI::Node {
+public:
+    BenchmarkNode()
+    {
         imgs[0] = Texture::create("assets/miku-cutie.jpg");
-        imgs[1] = Texture::create("assets/gray.jpeg");
+        imgs[1] = Texture::create("assets/aqua-nyan.jpg");
         imgs[2] = Texture::create("assets/rem-sleeping-rose.png");
         imgs[3] = Texture::create("assets/you-waifu-material.jpg");
-
-        RenderCommand::set_clear_color(Color::BLACK);
     }
 
     virtual void render() override
     {
         auto width = Application::the().window().width();
         auto height = Application::the().window().height();
-
-        Renderer2D::begin(cam);
 
         float y = 0.0f;
         do {
@@ -59,14 +69,12 @@ protected:
         Renderer2D::translate(-200.0f, -200.0f);
         Renderer2D::draw_texture(Texture::DEFAULT, 200.0f, 200.0f, 50.0f, 50.0f);
         Renderer2D::pop_state();
-
-        Renderer2D::end();
     }
 
     virtual void update(float dt) override
     {
         float speed = 300 * dt;
-        glm::vec3 v = { 0.0f, 0.0f, 0.0f };
+        glm::vec2 v = { 0.0f, 0.0f };
         if (Input::is_key_pressed(KeyCode::W))
             v.y -= speed;
         if (Input::is_key_pressed(KeyCode::A))
@@ -76,8 +84,8 @@ protected:
         if (Input::is_key_pressed(KeyCode::D))
             v.x += speed;
 
-        if (v.x != 0.0f || v.y != 0.0f || v.z != 0.0f) {
-            cam->set_position(cam->position() + v);
+        if (v.x != 0.0f || v.y != 0.0f) {
+            set_position(position() + v);
         }
 
         if (Input::is_key_pressed(KeyCode::Q))
@@ -103,8 +111,16 @@ private:
     float rot = 45.0f;
     float imgWidth = 50.0f;
     float rectSize = 50.0f;
-    RefPtr<OrthographicCamera> cam;
     std::array<RefPtr<Texture>, 4> imgs;
+};
+
+class Scene : public GUI::Node {
+public:
+    Scene()
+    {
+        add_child(make_asset<BenchmarkNode>());
+        add_child(make_asset<TestNode>());
+    }
 };
 
 class MyApp : public Application {
