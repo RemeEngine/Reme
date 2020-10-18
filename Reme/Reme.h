@@ -15,6 +15,9 @@
 #include <Reme/Renderer/Renderer2D.h>
 #include <Reme/Renderer/RendererAPI.h>
 
+#include <Reme/GUI/Node.h>
+#include <Reme/GUI/Sprite.h>
+
 using Reme::Application;
 using Reme::Color;
 using Reme::Image;

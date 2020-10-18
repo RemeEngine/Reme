@@ -7,6 +7,7 @@ set(SOURCES
     Debug/ExceptionHandler.cpp
     Events/Input.cpp
     GUI/Node.cpp
+    GUI/Sprite.cpp
     Impl/GLFW_Window.cpp
     Impl/OpenGL/OpenGL_Buffers.cpp
     Impl/OpenGL/OpenGL_RendererAPI.cpp
