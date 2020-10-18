@@ -5,6 +5,7 @@
 #include <Reme/Renderer/OrthographicCamera.h>
 #include <Reme/Renderer/Renderer.h>
 #include <Reme/Renderer/Renderer2D.h>
+#include <Reme/Renderer/RendererAPI.h>
 #include <chrono>
 
 namespace Reme {
@@ -64,8 +65,13 @@ void Application::run()
         if (!m_minimized) {
             PROFILE_SCOPE("render_call");
 
+            RenderCommand::clear();
+            Renderer2D::begin();
+
             AppRenderEvent e;
             on_event(e);
+
+            Renderer2D::end();
         }
 
         last_time = current_time;
