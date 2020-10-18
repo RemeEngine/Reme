@@ -49,7 +49,7 @@ void Node::sort_children_by_z_order()
     });
 }
 
-void Node::on_event(Badge<Window>, Event& event)
+void Node::on_event(Event& event)
 {
     PROFILE_FUNCTION();
 
@@ -80,7 +80,8 @@ bool Node::on_render(AppRenderEvent event)
 
     Renderer2D::push_state();
 
-    glm::vec2 relative_anchor_pos = transformed_size() * anchor_point();
+    glm::vec2 relative_anchor_pos = size() * scale() * anchor_point();
+
     Renderer2D::translate(position());
     Renderer2D::translate(relative_anchor_pos);
     Renderer2D::rotate(rotation());
@@ -98,7 +99,7 @@ bool Node::on_render(AppRenderEvent event)
 
 glm::mat3 Node::transformation_matrix() const
 {
-    glm::vec2 relative_anchor_pos = transformed_size() * anchor_point();
+    glm::vec2 relative_anchor_pos = size() * scale() * anchor_point();
 
     glm::mat3 matrix(1.0f);
     matrix = glm::translate(matrix, position());

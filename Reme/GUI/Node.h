@@ -51,7 +51,7 @@ public:
     inline virtual u32 parent_uid() const { return m_parent_uid; }
     inline virtual RefPtr<Node> parent() { return AssetManager::get<Node>(m_parent_uid); }
 
-    virtual void on_event(Badge<Window>, Event&);
+    virtual void on_event(Event&);
 
     virtual void update(float) {}
     virtual void render() {}
@@ -94,10 +94,6 @@ public:
     inline virtual void set_size(glm::vec2 size) { m_size = size; }
     inline void set_width(float width) { set_size({ width, size().y }); }
     inline void set_height(float height) { set_size({ size().x, height }); }
-
-    inline virtual glm::vec2 transformed_size() const { return size() * scale(); }
-    inline float transformed_width() const { return transformed_size().x; }
-    inline float transformed_height() const { return transformed_size().y; }
 
     inline virtual const char* class_name() const override { return "GUI::Node"; }
 

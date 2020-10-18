@@ -52,7 +52,7 @@ public:
     void on_event(Event& event)
     {
         if (m_scene)
-            m_scene->on_event({}, event);
+            m_scene->on_event(event);
     }
 
 protected:

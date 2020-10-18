@@ -25,6 +25,8 @@ public:
 
     virtual void render() override;
 
+    inline virtual const char* class_name() const override { return "GUI::Sprite"; }
+
 private:
     RefPtr<Texture> m_texture;
 };
