@@ -12,6 +12,7 @@
 #include <glm/glm.hpp>
 
 namespace Reme {
+
 class Renderer2D {
 public:
     static void initialize();
@@ -27,7 +28,7 @@ public:
         draw_partial_texture(Texture::WHITE, 0.0f, 0.0f, 0.0f, 0.0f, x, y, width, height, color);
     }
 
-    static void draw_texture(const RefPtr<Texture>& texture, float dest_x, float dest_y)
+    static void draw_texture(const RefPtr<Texture>& texture, float dest_x = 0.0f, float dest_y = 0.0f)
     {
         draw_partial_texture(
             texture,
@@ -57,7 +58,17 @@ public:
     static void set_transformation_matrix(const glm::mat3& mat);
 
     static void translate(float x, float y);
+    static void translate(const glm::vec2& v)
+    {
+        translate(v.x, v.y);
+    }
+
     static void scale(float x, float y);
+    static void scale(const glm::vec2& v)
+    {
+        scale(v.x, v.y);
+    }
+
     static void rotate(float rotation_radian);
 
     struct Vertex {
@@ -82,4 +93,5 @@ public:
 private:
     static void flush();
 };
+
 } // namespace Reme
