@@ -11,7 +11,7 @@ static const u32 MAX_QUAD_COUNT = 100000;
 
 static const u32 MAX_VERTEX_COUNT = MAX_QUAD_COUNT * 4;
 static const u32 MAX_INDEX_COUNT = MAX_QUAD_COUNT * 6;
-static u32 MAX_TEXTURE_UNIT;
+static u32 MAX_TEXTURE_UNIT = 6;
 
 static Renderer2D::Data s_data;
 static std::vector<glm::mat3> s_tranform_stack;
@@ -23,7 +23,8 @@ void Renderer2D::initialize()
     s_tranform_stack.push_back(glm::mat3(1.0f));
     s_data.buffer = new Vertex[MAX_QUAD_COUNT * 4];
 
-    MAX_TEXTURE_UNIT = RenderCommand::max_texture_unit();
+    // Todo: Use this when we can generate shader on the fly
+    //    MAX_TEXTURE_UNIT = RenderCommand::max_texture_unit();
 
     s_data.flat_color_shader = Shader::create("Flat Shader",
         // Vertex shader
@@ -127,12 +128,12 @@ void Renderer2D::begin(const RefPtr<Camera>& cam)
 {
     PROFILE_FUNCTION();
 
-    RenderCommand::clear();
     s_data.flat_color_shader->bind();
     s_data.flat_color_shader->set_mat4("viewMat", cam->view_matrix());
     s_data.flat_color_shader->set_mat4("projMat", cam->projection_matrix());
 
     s_data.VAO->bind();
+    // flush();
 }
 
 void Renderer2D::end()
@@ -159,7 +160,7 @@ void Renderer2D::flush()
     RenderCommand::draw_indexed(DrawMode::TRIANGLES, s_data.vertex_index / 4 * 6);
 
     s_data.vertex_index = 0;
-    s_data.textures.clear();
+    s_data.textures.resize(0);
 }
 
 void Renderer2D::draw_partial_texture(
@@ -227,7 +228,7 @@ void Renderer2D::draw_partial_texture(
 
 void Renderer2D::push_state()
 {
-    s_tranform_stack.push_back(glm::mat3(1.0f));
+    s_tranform_stack.push_back(glm::mat3(s_tranform_stack.back()));
 }
 
 void Renderer2D::pop_state()
