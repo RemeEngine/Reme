@@ -6,11 +6,6 @@ project(Reme)
 
 enable_testing()
 
-function(make_bin target_name)
-    add_executable(${target_name} ${SOURCES})
-    install(TARGETS ${target_name} RUNTIME DESTINATION .)
-endfunction()
-
 unset(CMAKE_SYSROOT)
 set(CMAKE_STAGING_PREFIX ${CMAKE_SOURCE_DIR}/Out)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/Out)
