@@ -23,6 +23,7 @@ public:
         return ss.str();
     }
 
+    EVENT_CAN_NOT_BE_HANDLED()
     EVENT_CLASS_TYPE(WindowResize)
     EVENT_CLASS_CATEGORY(EventCategoryApplication)
 private:
@@ -34,30 +35,8 @@ class WindowCloseEvent : public Event {
 public:
     WindowCloseEvent() {};
 
+    EVENT_CAN_NOT_BE_HANDLED()
     EVENT_CLASS_TYPE(WindowClose)
-    EVENT_CLASS_CATEGORY(EventCategoryApplication)
-};
-
-class AppUpdateEvent : public Event {
-public:
-    AppUpdateEvent(float elapsed_time)
-        : m_elapsed_time(elapsed_time)
-    {
-    }
-
-    float delta_time() const { return m_elapsed_time; }
-
-    EVENT_CLASS_TYPE(AppUpdate)
-    EVENT_CLASS_CATEGORY(EventCategoryApplication)
-private:
-    float m_elapsed_time;
-};
-
-class AppRenderEvent : public Event {
-public:
-    AppRenderEvent() {};
-
-    EVENT_CLASS_TYPE(AppRender)
     EVENT_CLASS_CATEGORY(EventCategoryApplication)
 };
 

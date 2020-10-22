@@ -11,8 +11,6 @@ enum class EventType {
     WindowFocus,
     WindowLostFocus,
     WindowMove,
-    AppUpdate,
-    AppRender,
     KeyDown,
     KeyUp,
     KeyPress,
@@ -39,19 +37,30 @@ enum EventCategory {
 #define EVENT_CLASS_CATEGORY(category) \
     virtual int category_flags() const override { return category; }
 
+#define EVENT_CAN_NOT_BE_HANDLED() \
+    virtual void mark_is_handled() override {}
+
 class Event {
 public:
-    bool handled = false;
-
     virtual EventType type() const = 0;
     virtual const char* name() const = 0;
     virtual int category_flags() const = 0;
     virtual std::string to_string() const { return name(); }
 
+    inline bool is_handled() const { return m_handled; }
+    virtual void mark_is_handled() { m_handled = true; }
+
+    inline bool should_propagate() const { return m_should_propagate; }
+    virtual void stop_propagation() { m_should_propagate = false; }
+
     inline bool in_category(EventCategory category)
     {
         return category_flags() & category;
     }
+
+private:
+    bool m_handled { false };
+    bool m_should_propagate { true };
 };
 
 class EventDispatcher {
@@ -65,10 +74,11 @@ public:
     bool dispatch(const F& func)
     {
         if (m_event.type() == T::static_type()) {
-            m_event.handled = func(static_cast<T&>(m_event));
+            if (func(static_cast<T&>(m_event)))
+                m_event.mark_is_handled();
+
             return true;
         }
-
         return false;
     }
 

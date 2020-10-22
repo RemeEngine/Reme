@@ -5,6 +5,7 @@
 #include <sstream>
 
 namespace Reme {
+
 class MouseMoveEvent : public Event {
 public:
     MouseMoveEvent(float x, float y)
@@ -103,4 +104,5 @@ public:
 
     EVENT_CLASS_TYPE(MouseUp)
 };
+
 } // namespace Reme
