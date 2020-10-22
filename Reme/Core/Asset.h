@@ -5,11 +5,13 @@
 
 namespace Reme {
 
+using AssetUID = u32;
+
 class Asset;
 
 class AssetManager {
 public:
-    static u32 next_uid();
+    static AssetUID next_uid();
 
     template<typename T>
     static RefPtr<T> adopt_asset(T& asset)
@@ -30,7 +32,7 @@ public:
         return ptr;
     }
 
-    static RefPtr<Asset> get_asset(u32 uid)
+    static RefPtr<Asset> get_asset(AssetUID uid)
     {
         auto it = s_asset_map.find(uid);
         if (it == s_asset_map.end())
@@ -46,7 +48,7 @@ public:
     }
 
     template<typename T>
-    static RefPtr<T> get(u32 uid)
+    static RefPtr<T> get(AssetUID uid)
     {
         auto result = get_asset(uid);
         if (result == nullptr)
@@ -58,14 +60,19 @@ public:
 private:
     friend Asset;
 
-    static u32 s_uid_count;
-    static std::unordered_map<u32, WeakPtr<Asset>> s_asset_map;
+    static AssetUID s_uid_count;
+    static std::unordered_map<AssetUID, WeakPtr<Asset>> s_asset_map;
 };
 
 class Asset : public RefCounted<Asset> {
 public:
-    virtual ~Asset() {};
-    ALWAYS_INLINE u32 uid() const { return m_uid; }
+    virtual ~Asset()
+    {
+        if (!AssetManager::get_asset(uid()))
+            CORE_LOG_WARN("An asset (uid={}) was create and remove without using 'make_asset'");
+    };
+
+    ALWAYS_INLINE AssetUID uid() const { return m_uid; }
     virtual const char* class_name() const = 0;
 
 protected:
@@ -77,17 +84,17 @@ protected:
     }
 
 private:
-    u32 m_uid { 0 };
+    AssetUID m_uid { 0 };
 };
 
-class AssetWrapper : public Asset {
-    MAKE_NONCOPYABLE(AssetWrapper);
+class NoncopyableAsset : public Asset {
+    MAKE_NONCOPYABLE(NoncopyableAsset);
 
 public:
-    virtual ~AssetWrapper() {};
+    virtual ~NoncopyableAsset() {};
 
 protected:
-    AssetWrapper() {};
+    NoncopyableAsset() {};
 };
 
 template<typename T, typename... Args>

@@ -5,7 +5,7 @@
 
 namespace Reme {
 
-class VertexArray : public AssetWrapper {
+class VertexArray : public NoncopyableAsset {
 public:
     static RefPtr<VertexArray> create();
 
