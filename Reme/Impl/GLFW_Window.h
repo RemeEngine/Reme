@@ -33,7 +33,8 @@ private:
 
     struct WindowData {
         bool is_VSync;
-        u32 width, height;
+        u32 width;
+        u32 height;
         std::string title;
         EventFunctionCB on_event;
     };
