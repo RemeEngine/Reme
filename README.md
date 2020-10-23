@@ -31,3 +31,21 @@ In NO PARTICULAR ORDER, things i intent to do:
 - REME_DISABLE_ASSERT : disable `assert`
 
 - REME_DISABLE_LOGGING : disable logging
+
+## Road map
+
+### 0.0.1
+
+- [ ] EventDispatcher / EventManager
+
+- [ ] GUI::Node event: MouseEnter, MouseLeave
+
+- [ ] Build: 
+
+    + DEBUG: Simple optimization, all debug symbols, log level `trace`, enable assert
+
+    + SANDBOX: -O3 optimization, all debug symbols, log level `info`, enable assert
+
+    + RELEASE: -O3 optimization, no debug symbols, log level `warn`, enable assert
+
+- [ ] Examples: FlappyBird clone 
