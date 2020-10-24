@@ -1,18 +1,23 @@
 #include <Reme/Debug/ExceptionHandler.h>
 
+#include <Reme/Core/Alias.h>
 #include <Reme/Debug/Demangle.h>
 #include <csignal>
 #include <cstdlib>
+
+#ifndef _MSC_VER
 #include <cxxabi.h>
 #include <dlfcn.h>
 #include <execinfo.h>
+#endif
 
 namespace Reme {
 
-constexpr const size_t BACKTRACE_SIZE = 21;
+MAYBE_UNUSED constexpr const size_t BACKTRACE_SIZE = 21;
 
 void print_backtrace(int signal)
-{
+{   
+#ifndef _MSC_VER
     void* callstack[BACKTRACE_SIZE];
 
     size_t size = backtrace(callstack, BACKTRACE_SIZE);
@@ -30,6 +35,8 @@ void print_backtrace(int signal)
     }
 
     std::free(symbols);
+#else
+#endif
     std::_Exit(signal);
 }
 
@@ -41,7 +48,7 @@ void ExceptionHandler::initialize()
     std::signal(SIGINT, print_backtrace);
     std::signal(SIGSEGV, print_backtrace);
     std::signal(SIGTERM, print_backtrace);
-    std::signal(SIGTRAP, print_backtrace);
+//    std::signal(SIGTRAP, print_backtrace);
 }
 
 } // namespace Reme
