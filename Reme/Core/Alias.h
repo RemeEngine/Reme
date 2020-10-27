@@ -51,6 +51,11 @@ private:                   \
     c(c&&) = delete;       \
     c& operator=(c&&) = delete
 
+enum class IteratorDecision {
+    Break,
+    Continue,
+};
+
 // Alias smart pointer
 namespace Reme {
 template<typename T>
