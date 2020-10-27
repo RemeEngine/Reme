@@ -68,8 +68,10 @@ class Asset : public RefCounted<Asset> {
 public:
     virtual ~Asset()
     {
+#ifdef REME_TRACE_ASSET_LIFETIME
         if (!AssetManager::get_asset(uid()))
-            CORE_LOG_WARN("An asset (uid={}) was create and remove without using 'make_asset'");
+            CORE_LOG_WARN("An asset (uid={}) was create and remove without using 'make_asset'", uid());
+#endif
     };
 
     ALWAYS_INLINE AssetUID uid() const { return m_uid; }
