@@ -7,7 +7,7 @@ namespace Reme {
 
 Input::InputData Input::s_data;
 
-void Input::on_event(Event& event)
+void Input::on_event(Badge<Application>, Event& event)
 {
     EventDispatcher dispatcher(event);
     dispatcher.dispatch<KeyDownEvent>(Input::on_key_down);
@@ -46,9 +46,9 @@ bool Input::is_mouse_pressed(MouseCode button)
     return false;
 }
 
-glm::vec2 Input::mouse_position()
+float Input::mouse_delta()
 {
-    return { s_data.mouse_x, s_data.mouse_y };
+    return glm::distance(s_data.mouse_position, s_data.previous_mouse_position);
 }
 
 bool Input::on_key_down(KeyDownEvent e)
@@ -65,20 +65,22 @@ bool Input::on_key_up(KeyUpEvent e)
 
 bool Input::on_mouse_down(MouseDownEvent e)
 {
+    s_data.mouse_down_position = glm::vec2(s_data.mouse_position);
     s_data.key_map[(u16)e.button()] = KeyState::KeyDown;
     return false;
 }
 
 bool Input::on_mouse_up(MouseUpEvent e)
 {
+    s_data.mouse_down_position = { -1.0f, -1.0f };
     s_data.key_map[(u16)e.button()] = KeyState::KeyUp;
     return false;
 }
 
 bool Input::on_mouse_move(MouseMoveEvent e)
 {
-    s_data.mouse_x = e.x();
-    s_data.mouse_y = e.y();
+    s_data.previous_mouse_position = s_data.mouse_position;
+    s_data.mouse_position = { e.x(), e.y() };
     return false;
 }
 
