@@ -1,5 +1,6 @@
 #include <Reme/GUI/Node.h>
 
+#include <Reme/Core/Application.h>
 #include <Reme/Debug/Instrumentor.h>
 #include <Reme/Renderer/Renderer2D.h>
 #include <algorithm>
@@ -14,10 +15,16 @@ void Node::add_child(RefPtr<Node> child)
     ASSERT(!child->parent_uid(), "This node already been added");
 
     m_should_reorder_children = true;
+
     if (!child->z_order())
         child->set_z_order(++m_next_z_order);
 
     m_children.push_back(child);
+    if (m_children.size() > m_peek_child_count) {
+        m_peek_child_count = m_children.size();
+        Application::the().queue_do_layout();
+    }
+
     child->on_enter();
 }
 
@@ -36,6 +43,24 @@ void Node::remove_child(RefPtr<Node> child)
     }
 }
 
+void Node::remove_all_child()
+{
+    for_each_child([](auto& child) {
+        child->on_exit();
+    });
+
+    m_children.clear();
+}
+
+void Node::on_enter()
+{
+}
+
+void Node::on_exit()
+{
+    remove_all_child();
+}
+
 void Node::sort_children_by_z_order()
 {
     PROFILE_FUNCTION();
@@ -49,34 +74,13 @@ void Node::sort_children_by_z_order()
     });
 }
 
-void Node::on_event(Event& event)
-{
-    PROFILE_FUNCTION();
-
-    EventDispatcher dispatcher(event);
-    dispatcher.dispatch<KeyDownEvent>(BIND_EVENT_FN(Node::on_key_down));
-    dispatcher.dispatch<KeyUpEvent>(BIND_EVENT_FN(Node::on_key_up));
-    dispatcher.dispatch<MouseDownEvent>(BIND_EVENT_FN(Node::on_mouse_down));
-    dispatcher.dispatch<MouseUpEvent>(BIND_EVENT_FN(Node::on_mouse_up));
-    dispatcher.dispatch<MouseMoveEvent>(BIND_EVENT_FN(Node::on_mouse_move));
-    dispatcher.dispatch<AppRenderEvent>(BIND_EVENT_FN(Node::on_render));
-    dispatcher.dispatch<AppUpdateEvent>(BIND_EVENT_FN(Node::on_update));
-}
-
-bool Node::on_update(AppUpdateEvent event)
-{
-    update(event.delta_time());
-    for_each_child([&event](auto& child) {
-        child->on_update(event);
-    });
-
-    return false;
-}
-
-bool Node::on_render(AppRenderEvent event)
+void Node::on_render()
 {
     if (m_should_reorder_children)
         sort_children_by_z_order();
+
+    if (!m_visible)
+        return;
 
     Renderer2D::push_state();
 
@@ -89,26 +93,39 @@ bool Node::on_render(AppRenderEvent event)
     Renderer2D::translate(-relative_anchor_pos);
 
     render();
-    for_each_child([&event](auto& child) {
-        child->on_render(event);
+    for_each_child([](auto& child) {
+        child->on_render();
     });
 
     Renderer2D::pop_state();
-    return false;
 }
 
-glm::mat3 Node::transformation_matrix() const
+void Node::do_layout()
 {
-    glm::vec2 relative_anchor_pos = size() * scale() * anchor_point();
+    static i32 s_global_z_order = 0;
 
-    glm::mat3 matrix(1.0f);
-    matrix = glm::translate(matrix, position());
-    matrix = glm::translate(matrix, relative_anchor_pos);
-    matrix = glm::rotate(matrix, rotation());
-    matrix = glm::scale(matrix, scale());
-    matrix = glm::translate(matrix, -relative_anchor_pos);
+    if (!parent()) { // This is root node
+        s_global_z_order = 0;
+        m_bounding_rect = glm::vec4(0, 0, size() * scale());
+        return;
+    }
 
-    return matrix;
+    Node& parent = *Node::parent();
+    auto& parent_rect = parent.bounding_rect();
+
+    auto inherited_scale = glm::vec2(parent_rect.z, parent_rect.w) / parent.size();
+    auto effective_size = size() * scale() * inherited_scale;
+    auto top_left = glm::vec2(parent_rect.x, parent_rect.y) + position() - effective_size * anchor_point();
+
+    m_bounding_rect = glm::vec4(top_left, effective_size);
+    m_assigned_z_order = ++s_global_z_order;
+
+    if (m_should_reorder_children)
+        sort_children_by_z_order();
+
+    for_each_child([](auto& child) {
+        child->do_layout();
+    });
 }
 
 } // namespace Reme::GUI

@@ -29,10 +29,7 @@ public:
     inline virtual const std::string& name() const { return m_name; }
     inline virtual void set_name(const std::string& name) { m_name = name; }
 
-    inline virtual const std::vector<RefPtr<Node>>& children() const
-    {
-        return m_children;
-    }
+    inline virtual const std::vector<RefPtr<Node>>& children() const { return m_children; }
 
     template<typename Callback>
     void for_each_child(Callback callback)
@@ -44,20 +41,28 @@ public:
 
     virtual void add_child(RefPtr<Node>);
     virtual void remove_child(RefPtr<Node>);
+    virtual void remove_all_child();
 
     inline virtual i32 z_order() const { return m_z_order; }
     inline virtual void set_z_order(i32 z_order) { m_z_order = z_order; }
 
+    inline i32 global_z_order() const { return m_assigned_z_order; }
+    inline const glm::vec4& bounding_rect() const { return m_bounding_rect; }
+
     inline virtual u32 parent_uid() const { return m_parent_uid; }
     inline virtual RefPtr<Node> parent() { return AssetManager::get<Node>(m_parent_uid); }
+    inline virtual RefPtr<Node> parent() const { return AssetManager::get<Node>(m_parent_uid); }
 
-    virtual void on_event(Event&);
+    virtual void do_layout();
 
-    virtual void update(float) {}
+    virtual void on_render();
     virtual void render() {}
 
-    virtual void on_enter() {}
-    virtual void on_exit() {}
+    virtual void on_enter();
+    virtual void on_exit();
+
+    inline virtual bool visible() const { return m_visible; }
+    inline virtual void set_visible(bool visible) { m_visible = visible; }
 
     inline virtual float rotation() const { return m_rotation; }
     inline virtual void set_rotation(float rotation) { m_rotation = rotation; }
@@ -97,24 +102,19 @@ public:
 
     inline virtual const char* class_name() const override { return "GUI::Node"; }
 
-    glm::mat3 transformation_matrix() const;
-
-protected:
-    virtual bool on_mouse_down(MouseDownEvent) { return false; }
-    virtual bool on_mouse_up(MouseUpEvent) { return false; }
-    virtual bool on_mouse_move(MouseMoveEvent) { return false; }
-    virtual bool on_key_down(KeyDownEvent) { return false; }
-    virtual bool on_key_up(KeyUpEvent) { return false; }
-    virtual bool on_key_press(KeyPressEvent) { return false; }
-    bool on_update(AppUpdateEvent);
-    bool on_render(AppRenderEvent);
-
 private:
     void sort_children_by_z_order();
 
-    u32 m_parent_uid { 0 };
+    // Note: For event handling
+    i32 m_assigned_z_order { 0 };
+    glm::vec4 m_bounding_rect { 0, 0, 0, 0 };
+
+    u32 m_peek_child_count { 0 };
+
+    AssetUID m_parent_uid { 0 };
     i32 m_z_order { 0 };
     i32 m_next_z_order { 0 };
+    bool m_visible { true };
 
     float m_rotation { 0.0f };
     glm::vec2 m_scale { 1.0f, 1.0f };

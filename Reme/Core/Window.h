@@ -41,18 +41,18 @@ public:
     RefPtr<GUI::Node> current_scene() { return m_scene; }
     void set_current_scene(RefPtr<GUI::Node> scene)
     {
-        if (m_scene) {
+        if (m_scene)
             m_scene->on_exit();
-        }
 
         m_scene = scene;
-        scene->on_enter();
+        if (scene)
+            scene->on_enter();
     }
 
-    void on_event(Event& event)
+    void render()
     {
         if (m_scene)
-            m_scene->on_event(event);
+            m_scene->on_render();
     }
 
 protected:

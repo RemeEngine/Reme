@@ -20,6 +20,8 @@ public:
     inline float delta_time() const { return m_delta_time; }
     inline void set_delta_time(float dt) { m_delta_time = dt; }
 
+    inline void queue_do_layout() { m_should_do_layout = true; }
+
     inline Window& window() { return *m_window; }
     void run();
 
@@ -30,6 +32,7 @@ private:
 
     static Application* s_instance;
 
+    bool m_should_do_layout { true };
     OwnPtr<Window> m_window;
     bool m_running { false };
     bool m_minimized { false };

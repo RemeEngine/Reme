@@ -71,7 +71,7 @@ public:
         Renderer2D::pop_state();
     }
 
-    virtual void update(float dt) override
+    void update(float dt)
     {
         float speed = 300 * dt;
         glm::vec2 v = { 0.0f, 0.0f };

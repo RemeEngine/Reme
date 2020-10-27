@@ -50,6 +50,14 @@ void Application::run()
     while (m_running) {
         PROFILE_SCOPE("main_loop");
 
+        {
+            PROFILE_SCOPE("do_layout");
+            if (m_should_do_layout && m_window && m_window->current_scene()) {
+                m_window->current_scene()->do_layout();
+                m_should_do_layout = false;
+            }
+        }
+
         m_window->poll_event();
 
         current_time = std::chrono::high_resolution_clock::now();
@@ -58,8 +66,6 @@ void Application::run()
             PROFILE_SCOPE("update_call");
 
             elapsed_time -= m_delta_time;
-            AppUpdateEvent e(m_delta_time);
-            on_event(e);
         }
 
         if (!m_minimized) {
@@ -67,16 +73,17 @@ void Application::run()
 
             RenderCommand::clear();
             Renderer2D::begin();
-
-            AppRenderEvent e;
-            on_event(e);
-
+            m_window->render();
             Renderer2D::end();
         }
 
         last_time = current_time;
         m_window->swap_buffers();
     }
+
+    m_window->set_current_scene(nullptr);
+    Logger::core_logger()->flush();
+    Logger::logger()->flush();
 }
 
 void Application::on_event(Event& event)
@@ -87,8 +94,7 @@ void Application::on_event(Event& event)
     dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::on_window_close));
     dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::on_window_resize));
 
-    Input::on_event(event);
-    window().on_event(event);
+    Input::on_event({}, event);
 }
 
 bool Application::on_window_close(WindowCloseEvent)
