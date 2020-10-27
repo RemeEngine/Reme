@@ -9,12 +9,12 @@ class Sprite : public Node {
 public:
     static RefPtr<Sprite> create(const std::string& path_to_image)
     {
-        return make_asset<Sprite>(Texture::create(path_to_image));
+        return Asset::make<Sprite>(Texture::create(path_to_image));
     }
 
     static RefPtr<Sprite> create(const RefPtr<Texture>& texture)
     {
-        return make_asset<Sprite>(texture);
+        return Asset::make<Sprite>(texture);
     }
 
     Sprite(const RefPtr<Texture>& texture)

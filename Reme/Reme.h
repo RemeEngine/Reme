@@ -22,7 +22,6 @@ using Reme::Application;
 using Reme::Color;
 using Reme::Image;
 using Reme::make;
-using Reme::make_asset;
 using Reme::make_own;
 using Reme::OrthographicCamera;
 using Reme::OwnPtr;

@@ -17,7 +17,9 @@ enum class EventType {
     MouseDown,
     MouseUp,
     MouseMove,
-    MouseScroll
+    MouseScroll,
+    AppRender,
+    AppUpdate,
 };
 
 enum EventCategory {

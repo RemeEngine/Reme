@@ -13,25 +13,6 @@ class AssetManager {
 public:
     static AssetUID next_uid();
 
-    template<typename T>
-    static RefPtr<T> adopt_asset(T& asset)
-    {
-        auto ptr = RefPtr<T>(&asset, [](T* ptr) {
-#ifdef REME_TRACE_ASSET_LIFETIME
-            CORE_LOG_TRACE("Removed ({}) {}", ptr->uid(), ptr->class_name());
-#endif
-            delete ptr;
-        });
-
-        s_asset_map[ptr->uid()] = ptr->weak_from_this();
-
-#ifdef REME_TRACE_ASSET_LIFETIME
-        CORE_LOG_TRACE("Created ({}) {}", ptr->uid(), ptr->class_name());
-#endif
-
-        return ptr;
-    }
-
     static RefPtr<Asset> get_asset(AssetUID uid)
     {
         auto it = s_asset_map.find(uid);
@@ -54,7 +35,7 @@ public:
         if (result == nullptr)
             return nullptr;
 
-        return std::dynamic_pointer_cast<T>(result);
+        return std::static_pointer_cast<T>(result);
     }
 
 private:
@@ -65,12 +46,24 @@ private:
 };
 
 class Asset : public RefCounted<Asset> {
-public:
+public:    
+    template<typename T, typename... Args>
+    ALWAYS_INLINE static RefPtr<T> make(Args&&... args)
+    {
+        RefPtr<T> ptr = std::make_shared<T>(std::forward<Args>(args)...);
+        AssetManager::s_asset_map[ptr->uid()] = ptr->weak_from_this();
+
+#ifdef REME_TRACE_ASSET_LIFETIME
+        CORE_LOG_TRACE("Created ({}) {}", ptr->uid(), ptr->class_name());
+#endif
+
+        return ptr;
+    }
+
     virtual ~Asset()
     {
 #ifdef REME_TRACE_ASSET_LIFETIME
-        if (!AssetManager::get_asset(uid()))
-            CORE_LOG_WARN("An asset (uid={}) was create and remove without using 'make_asset'", uid());
+        CORE_LOG_TRACE("Removed ({})", uid());
 #endif
     };
 
@@ -98,11 +91,5 @@ public:
 protected:
     NoncopyableAsset() {};
 };
-
-template<typename T, typename... Args>
-ALWAYS_INLINE constexpr RefPtr<T> make_asset(Args&&... args)
-{
-    return AssetManager::adopt_asset<T>(*new T(std::forward<Args>(args)...));
-}
 
 } // namespace Reme

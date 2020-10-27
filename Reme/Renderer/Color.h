@@ -19,6 +19,7 @@ public:
     static const Color YELLOW;
     static const Color MAGENTA;
     static const Color CYAN;
+#undef TRANSPARENT
     static const Color TRANSPARENT;
 
     union {

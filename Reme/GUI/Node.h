@@ -18,7 +18,7 @@ class Node : public Asset {
 public:
     static RefPtr<Node> create(const std::string& name = "AnonNode")
     {
-        return make_asset<Node>(name);
+        return Asset::make<Node>(name);
     }
 
     Node(const std::string& name = "Something that inherit Node, maybe")

@@ -118,8 +118,8 @@ class Scene : public GUI::Node {
 public:
     Scene()
     {
-        add_child(make_asset<BenchmarkNode>());
-        add_child(make_asset<TestNode>());
+        add_child(Asset::make<BenchmarkNode>());
+        add_child(Asset::make<TestNode>());
     }
 };
 
@@ -128,7 +128,7 @@ public:
     MyApp()
         : Application({ "Sandbox", 1280, 720 })
     {
-        window().set_current_scene(make_asset<Scene>());
+        window().set_current_scene(Asset::make<Scene>());
     }
 };
 

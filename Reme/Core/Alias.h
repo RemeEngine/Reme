@@ -81,7 +81,7 @@ class Asset;
 template<typename T, typename... Args>
 constexpr RefPtr<T> make(Args&&... args)
 {
-    static_assert(!std::is_base_of_v<Asset, T>, "We must use 'make_asset' instead of 'make' to create this");
+    static_assert(!std::is_base_of_v<Asset, T>, "We must use 'Asset::make' instead of 'make' to create this");
     return std::make_shared<T>(std::forward<Args>(args)...);
 }
 

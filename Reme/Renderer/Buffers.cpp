@@ -14,7 +14,7 @@ RefPtr<VertexBuffer> VertexBuffer::create(u32 byte_size, bool is_static)
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
         return nullptr;
     case RendererAPI::OpenGL:
-        return make_asset<OpenGL_VertexBuffer>(byte_size, is_static);
+        return Asset::make<OpenGL_VertexBuffer>(byte_size, is_static);
     }
 
     CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -30,7 +30,7 @@ RefPtr<IndexBuffer> IndexBuffer::create(u32 byte_size, bool is_static)
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
         return nullptr;
     case RendererAPI::OpenGL:
-        return make_asset<OpenGL_IndexBuffer>(byte_size, is_static);
+        return Asset::make<OpenGL_IndexBuffer>(byte_size, is_static);
     }
 
     CORE_ASSERT(false, "Unknown RendererAPI!");

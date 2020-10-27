@@ -10,16 +10,18 @@ public:
     static RefPtr<Image> create(u32 width, u32 height)
     {
         PROFILE_FUNCTION();
-        return AssetManager::adopt_asset<Image>(*new Image(width, height));
+        return Asset::make<Image>(width, height);
     }
 
     static RefPtr<Image> create(const std::string& path)
     {
         PROFILE_FUNCTION();
-        return AssetManager::adopt_asset<Image>(*new Image(path));
+        return Asset::make<Image>(path);
     }
 
-public:
+public:    
+    Image(u32 width, u32 height);
+    Image(const std::string& path);
     virtual ~Image() override;
 
     inline u32 width() const { return m_width; }
@@ -55,8 +57,6 @@ public:
     virtual const char* class_name() const override { return "Image"; }
 
 private:
-    Image(u32 width, u32 height);
-    Image(const std::string& path);
 
     u32 m_width { 0 };
     u32 m_height { 0 };

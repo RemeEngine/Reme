@@ -14,7 +14,7 @@ RefPtr<Shader> Shader::create(const std::string& filepath)
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
         return nullptr;
     case RendererAPI::OpenGL:
-        return make_asset<OpenGL_Shader>(filepath);
+        return Asset::make<OpenGL_Shader>(filepath);
     }
 
     CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -30,7 +30,7 @@ RefPtr<Shader> Shader::create(const std::string& name, const std::string& vertex
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
         return nullptr;
     case RendererAPI::OpenGL:
-        return make_asset<OpenGL_Shader>(name, vertex_shader, fragment_shader);
+        return Asset::make<OpenGL_Shader>(name, vertex_shader, fragment_shader);
     }
 
     CORE_ASSERT(false, "Unknown RendererAPI!");

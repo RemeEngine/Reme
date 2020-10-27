@@ -40,4 +40,28 @@ public:
     EVENT_CLASS_CATEGORY(EventCategoryApplication)
 };
 
+class AppUpdateEvent : public Event {
+public:
+    AppUpdateEvent(float elapsed_time)
+        : m_elapsed_time(elapsed_time)
+    {
+    }
+
+    float delta_time() const { return m_elapsed_time; }
+
+    EVENT_CLASS_TYPE(AppUpdate)
+    EVENT_CLASS_CATEGORY(EventCategoryApplication)
+private:
+    float m_elapsed_time;
+};
+
+class AppRenderEvent : public Event {
+public:
+    AppRenderEvent() {};
+
+    EVENT_CLASS_TYPE(AppRender)
+    EVENT_CLASS_CATEGORY(EventCategoryApplication)
+};
+
+
 } // namespace Reme

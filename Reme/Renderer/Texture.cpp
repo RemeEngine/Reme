@@ -32,7 +32,7 @@ RefPtr<Texture> Texture::create(u32 width, u32 height)
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
         return Texture::DEFAULT;
     case RendererAPI::OpenGL:
-        return make_asset<OpenGL_Texture>(width, height);
+        return Asset::make<OpenGL_Texture>(width, height);
     }
 
     CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -48,7 +48,7 @@ RefPtr<Texture> Texture::create(const RefPtr<Image>& image)
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
         return Texture::DEFAULT;
     case RendererAPI::OpenGL:
-        return make_asset<OpenGL_Texture>(image);
+        return Asset::make<OpenGL_Texture>(image);
     }
 
     CORE_ASSERT(false, "Unknown RendererAPI!");
@@ -64,7 +64,7 @@ RefPtr<Texture> Texture::create(const std::string& path)
         CORE_ASSERT(false, "RendererAPI::None is not supported!");
         return Texture::DEFAULT;
     case RendererAPI::OpenGL:
-        return make_asset<OpenGL_Texture>(Image::create(path));
+        return Asset::make<OpenGL_Texture>(Image::create(path));
     }
 
     CORE_ASSERT(false, "Unknown RendererAPI!");
