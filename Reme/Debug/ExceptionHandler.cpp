@@ -6,17 +6,17 @@
 #include <cstdlib>
 
 #ifndef _MSC_VER
-#include <cxxabi.h>
-#include <dlfcn.h>
-#include <execinfo.h>
+#    include <cxxabi.h>
+#    include <dlfcn.h>
+#    include <execinfo.h>
 #endif
 
 namespace Reme {
 
-MAYBE_UNUSED constexpr const size_t BACKTRACE_SIZE = 21;
+MAYBE_UNUSED constexpr const size_t BACKTRACE_SIZE = 41;
 
 void print_backtrace(int signal)
-{   
+{
 #ifndef _MSC_VER
     void* callstack[BACKTRACE_SIZE];
 
@@ -48,7 +48,7 @@ void ExceptionHandler::initialize()
     std::signal(SIGINT, print_backtrace);
     std::signal(SIGSEGV, print_backtrace);
     std::signal(SIGTERM, print_backtrace);
-//    std::signal(SIGTRAP, print_backtrace);
+    //    std::signal(SIGTRAP, print_backtrace);
 }
 
 } // namespace Reme
