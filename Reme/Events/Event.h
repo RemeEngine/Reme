@@ -65,9 +65,9 @@ private:
     bool m_should_propagate { true };
 };
 
-class EventDispatcher {
+class SimpleEventDispatcher {
 public:
-    EventDispatcher(Event& event)
+    SimpleEventDispatcher(Event& event)
         : m_event(event)
     {
     }

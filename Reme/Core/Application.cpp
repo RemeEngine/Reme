@@ -90,7 +90,7 @@ void Application::on_event(Event& event)
 {
     PROFILE_FUNCTION();
 
-    EventDispatcher dispatcher(event);
+    SimpleEventDispatcher dispatcher(event);
     dispatcher.dispatch<WindowCloseEvent>(BIND_EVENT_FN(Application::on_window_close));
     dispatcher.dispatch<WindowResizeEvent>(BIND_EVENT_FN(Application::on_window_resize));
 

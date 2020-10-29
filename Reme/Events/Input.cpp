@@ -9,7 +9,7 @@ Input::InputData Input::s_data;
 
 void Input::on_event(Badge<Application>, Event& event)
 {
-    EventDispatcher dispatcher(event);
+    SimpleEventDispatcher dispatcher(event);
     dispatcher.dispatch<KeyDownEvent>(Input::on_key_down);
     dispatcher.dispatch<KeyUpEvent>(Input::on_key_up);
     dispatcher.dispatch<MouseDownEvent>(Input::on_mouse_down);
