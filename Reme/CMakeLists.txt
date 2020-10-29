@@ -8,12 +8,12 @@ set(SOURCES
     Events/Input.cpp
     GUI/Node.cpp
     GUI/Sprite.cpp
-    Impl/GLFW_Window.cpp
-    Impl/OpenGL/OpenGL_Buffers.cpp
-    Impl/OpenGL/OpenGL_RendererAPI.cpp
-    Impl/OpenGL/OpenGL_Shader.cpp
-    Impl/OpenGL/OpenGL_Texture.cpp
-    Impl/OpenGL/OpenGL_VertexArray.cpp
+    Platform/GLFW_Window.cpp
+    Platform/OpenGL/OpenGL_Buffers.cpp
+    Platform/OpenGL/OpenGL_RendererAPI.cpp
+    Platform/OpenGL/OpenGL_Shader.cpp
+    Platform/OpenGL/OpenGL_Texture.cpp
+    Platform/OpenGL/OpenGL_VertexArray.cpp
     Renderer/Buffers.cpp
     Renderer/Color.cpp
     Renderer/Image.cpp

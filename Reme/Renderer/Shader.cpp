@@ -1,7 +1,7 @@
 #include <Reme/Renderer/RendererAPI.h>
 #include <Reme/Renderer/Shader.h>
 
-#include <Reme/Impl/OpenGL/OpenGL_Shader.h>
+#include <Reme/Platform/OpenGL/OpenGL_Shader.h>
 
 namespace Reme {
 

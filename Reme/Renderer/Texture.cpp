@@ -1,7 +1,7 @@
 #include <Reme/Renderer/Texture.h>
 
 #include <Reme/Core/Core.h>
-#include <Reme/Impl/OpenGL/OpenGL_Texture.h>
+#include <Reme/Platform/OpenGL/OpenGL_Texture.h>
 #include <Reme/Renderer/RendererAPI.h>
 
 namespace Reme {

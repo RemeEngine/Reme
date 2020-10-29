@@ -1,7 +1,7 @@
 #include <Reme/Core/Window.h>
 
 #include <Reme/Core/Core.h>
-#include <Reme/Impl/GLFW_Window.h>
+#include <Reme/Platform/GLFW_Window.h>
 
 namespace Reme {
 

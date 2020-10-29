@@ -1,4 +1,4 @@
-#include <Reme/Impl/OpenGL/OpenGL_Texture.h>
+#include <Reme/Platform/OpenGL/OpenGL_Texture.h>
 
 #include <glad/glad.h>
 

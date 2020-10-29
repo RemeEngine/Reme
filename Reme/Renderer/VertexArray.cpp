@@ -1,7 +1,7 @@
 #include <Reme/Renderer/VertexArray.h>
 
 #include <Reme/Debug/Instrumentor.h>
-#include <Reme/Impl/OpenGL/OpenGL_VertexArray.h>
+#include <Reme/Platform/OpenGL/OpenGL_VertexArray.h>
 #include <Reme/Renderer/RendererAPI.h>
 
 namespace Reme {

@@ -1,6 +1,6 @@
 #include <Reme/Renderer/RendererAPI.h>
 
-#include <Reme/Impl/OpenGL/OpenGL_RendererAPI.h>
+#include <Reme/Platform/OpenGL/OpenGL_RendererAPI.h>
 
 namespace Reme {
 

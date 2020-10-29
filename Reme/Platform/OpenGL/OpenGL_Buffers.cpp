@@ -1,4 +1,4 @@
-#include <Reme/Impl/OpenGL/OpenGL_Buffers.h>
+#include <Reme/Platform/OpenGL/OpenGL_Buffers.h>
 
 #include <glad/glad.h>
 

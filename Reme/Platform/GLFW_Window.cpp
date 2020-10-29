@@ -1,4 +1,4 @@
-#include <Reme/Impl/GLFW_Window.h>
+#include <Reme/Platform/GLFW_Window.h>
 
 #include <GLFW/glfw3.h>
 #include <Reme/Core/Core.h>

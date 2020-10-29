@@ -1,4 +1,4 @@
-#include <Reme/Impl/OpenGL/OpenGL_VertexArray.h>
+#include <Reme/Platform/OpenGL/OpenGL_VertexArray.h>
 #include <Reme/Renderer/ShaderDataLayout.h>
 
 #include <glad/glad.h>

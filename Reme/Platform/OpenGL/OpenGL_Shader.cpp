@@ -1,4 +1,4 @@
-#include <Reme/Impl/OpenGL/OpenGL_Shader.h>
+#include <Reme/Platform/OpenGL/OpenGL_Shader.h>
 #include <Reme/Utility/Utils.h>
 
 #include <fstream>

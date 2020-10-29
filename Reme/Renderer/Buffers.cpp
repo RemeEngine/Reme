@@ -1,7 +1,7 @@
 #include <Reme/Renderer/Buffers.h>
 #include <Reme/Renderer/RendererAPI.h>
 
-#include <Reme/Impl/OpenGL/OpenGL_Buffers.h>
+#include <Reme/Platform/OpenGL/OpenGL_Buffers.h>
 
 namespace Reme {
 
