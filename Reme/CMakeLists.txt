@@ -28,10 +28,16 @@ set(SOURCES
     Utility/Utils.cpp
 )
 
+set(LIBS
+    glad
+    glfw
+    imgui
+)
+
 add_library(Reme STATIC ${SOURCES})
-target_link_libraries(Reme glad glfw imgui)
+target_link_libraries(Reme ${LIBS})
 
 add_library(ProfileReme STATIC ${SOURCES})
 target_compile_definitions(ProfileReme PUBLIC -DREME_RUN_PROFILE)
-target_link_libraries(ProfileReme glad glfw imgui)
+target_link_libraries(ProfileReme ${LIBS})
 
