@@ -12,21 +12,7 @@ class Asset;
 class AssetManager {
 public:
     static AssetUID next_uid();
-
-    static RefPtr<Asset> get_asset(AssetUID uid)
-    {
-        auto it = s_asset_map.find(uid);
-        if (it == s_asset_map.end())
-            return nullptr;
-
-        auto asset = it->second;
-        if (asset.expired()) {
-            s_asset_map.erase(it);
-            return nullptr;
-        }
-
-        return asset.lock();
-    }
+    static RefPtr<Asset> get_asset(AssetUID uid);
 
     template<typename T>
     static RefPtr<T> get(AssetUID uid)
@@ -41,8 +27,8 @@ public:
 private:
     friend Asset;
 
-    static AssetUID s_uid_count;
-    static std::unordered_map<AssetUID, WeakPtr<Asset>> s_asset_map;
+    static void add(const Asset*);
+    static void remove(AssetUID uid);
 };
 
 class Asset : public RefCounted<Asset> {
@@ -50,8 +36,8 @@ public:
     template<typename T, typename... Args>
     ALWAYS_INLINE static RefPtr<T> make(Args&&... args)
     {
-        RefPtr<T> ptr = std::make_shared<T>(std::forward<Args>(args)...);
-        AssetManager::s_asset_map[ptr->uid()] = ptr->weak_from_this();
+        RefPtr<T> ptr = std::make_shared<T>(std::forward<Args>(args)...);        
+        AssetManager::add(ptr.get());
 
 #ifdef REME_TRACE_ASSET_LIFETIME
         CORE_LOG_TRACE("Created ({}) {}", ptr->uid(), ptr->class_name());
@@ -62,17 +48,13 @@ public:
 
     virtual ~Asset()
     {
-#ifdef REME_TRACE_ASSET_LIFETIME
-        CORE_LOG_TRACE("Removed ({})", uid());
-#endif
+        AssetManager::remove(uid());
     };
 
     ALWAYS_INLINE AssetUID uid() const { return m_uid; }
     virtual const char* class_name() const = 0;
 
 protected:
-    friend AssetManager;
-
     Asset()
         : m_uid(AssetManager::next_uid())
     {
