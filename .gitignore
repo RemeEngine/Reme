@@ -2,6 +2,9 @@
 Build
 Out
 
+# Generic project folder
+proj.*
+
 # Visual Studio Code folder
 .vscode
 
